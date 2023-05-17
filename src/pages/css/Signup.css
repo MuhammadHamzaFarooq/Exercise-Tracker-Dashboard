@@ -1,0 +1,19 @@
+@media only screen and (max-width: 768px) {
+    #img-container {
+      display: none;
+    }
+    #content-container{
+        width: 100%;
+    }
+    #form-section{
+        width: 90% !important;
+        /* background-color: rebeccapurple; */
+        margin: 0px ;
+    }
+}
+@media only screen and (max-width: 425px) {
+    header>h1{
+        font-size: 26px
+    }
+    
+}
