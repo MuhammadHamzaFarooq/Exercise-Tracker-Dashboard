@@ -40,6 +40,7 @@ const Login = () => {
               marginBottom: "20px",
               textAlign: "center",
             }}
+            className="text-4xl"
           >
             Exercise Tracker{" "}
           </h1>
@@ -67,6 +68,7 @@ const Login = () => {
                 style={{
                   marginBottom: "10px",
                 }}
+                className="text-3xl"
               >
                 SignIn
               </h1>
