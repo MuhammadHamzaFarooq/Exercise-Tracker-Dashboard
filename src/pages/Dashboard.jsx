@@ -22,6 +22,7 @@ import fitnessLogo from "../assets/imgs/Workout-bold.png";
 import AppsIcon from "@mui/icons-material/Apps";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Home from "./Home"
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -269,7 +270,7 @@ export default function Dashboard() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Typography paragraph></Typography>
+        <Home />
       </Box>
     </Box>
   );
