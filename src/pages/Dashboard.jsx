@@ -480,7 +480,7 @@ export default function Dashboard() {
       </Drawer>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, backgroundColor: "#F5F5F5", height: "100vh" }}
+        sx={{ flexGrow: 1, p: 3, backgroundColor: "#F5F5F5", height: "200vh" }}
       >
         <DrawerHeader />
         {/* <Home /> */}
