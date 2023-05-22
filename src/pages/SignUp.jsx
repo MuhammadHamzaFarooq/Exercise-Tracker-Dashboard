@@ -7,8 +7,10 @@ import Input from "../components/Input";
 import img from "../assets/imgs/FitnessMainImg.png";
 import "./css/Login.css";
 import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   return (
     <div
       style={{
@@ -125,7 +127,6 @@ const SignUp = () => {
                 type="text"
                 onChange={(e) => console.log(e.target.value)}
                 value={"muhammad hamza farooq"}
-                
               />
             </div>
             <div
@@ -165,7 +166,7 @@ const SignUp = () => {
               }}
             >
               <Button
-                onClick={() => console.log("Login Click")}
+                onClick={() => navigate("/login")}
                 title="Sign Up"
                 _style={{
                   backgroundColor: "#0DC58A",
@@ -189,6 +190,7 @@ const SignUp = () => {
                 Don’t have an account?{" "}
                 <span>
                   <button
+                     onClick={() => navigate("/login")}
                     style={{
                       color: "#2C5688",
                       backgroundColor: "white",

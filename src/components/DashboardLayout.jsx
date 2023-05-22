@@ -507,7 +507,15 @@ export default function DashboardLayout() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          backgroundColor: "#F5F5F5",
+          maxHeight: "200vh",
+        }}
+      >
         <DrawerHeader />
         {/* <Home /> */}
         {/* <CustomTable
