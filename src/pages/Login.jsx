@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import img from "../assets/imgs/FitnessMainImg.png";
 import "./css/Login.css";
+import { Typography } from "@mui/material";
 
 const Login = () => {
   return (
@@ -33,17 +34,20 @@ const Login = () => {
             alignItems: "center",
           }}
         >
-          <h1
-            style={{
+          <Typography
+            variant="h4"
+            component="h2"
+            sx={{
+              fontWeight: "bold",
+              marginTop: "10px",
+              textAlign: "center",
               marginTop: "15px",
               marginLeft: "20px",
               marginBottom: "20px",
-              textAlign: "center",
             }}
-            className="text-4xl"
           >
             Exercise Tracker{" "}
-          </h1>
+          </Typography>
           <hr
             style={{
               color: "#D9DBE9",
@@ -64,19 +68,24 @@ const Login = () => {
         >
           <div>
             <div>
-              <h1
-                style={{
-                  marginBottom: "10px",
+              <Typography
+                variant="h6"
+                component="h2"
+                sx={{
+                  fontWeight: "bold",
+                  marginTop: "10px",
+                  marginTop: "15px",
+                  marginBottom: "20px",
                 }}
-                className="text-3xl"
               >
                 SignIn
-              </h1>
+              </Typography>
             </div>
             <div>
               <p
                 style={{
                   marginBottom: "10px",
+                  color: "#6F6C90",
                 }}
               >
                 Log into your existing account of Exercise Tracker

@@ -19,8 +19,14 @@ import { GiEgyptianWalk } from "react-icons/gi";
 export default function Home() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2} >
-        <Grid item xs={12} sm={12} md={4} lg={3} xl={2}  
+      <Grid container spacing={2}>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={4}
+          lg={3}
+          xl={2}
           sx={{
             marginLeft: "10px",
             marginRight: "10px",
@@ -40,7 +46,13 @@ export default function Home() {
             color={"#ADEFB0"}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={4} lg={3} xl={2}
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={4}
+          lg={3}
+          xl={2}
           sx={{
             marginLeft: "10px",
             marginRight: "10px",
@@ -60,7 +72,13 @@ export default function Home() {
             color={"#D4C6DF"}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={4} lg={3} xl={2}
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={4}
+          lg={3}
+          xl={2}
           sx={{
             marginLeft: "10px",
             marginRight: "10px",
@@ -80,7 +98,13 @@ export default function Home() {
             color={"#F7DEE7"}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={4} lg={3} xl={2}
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={4}
+          lg={3}
+          xl={2}
           sx={{
             marginLeft: "10px",
             marginRight: "10px",
@@ -100,7 +124,13 @@ export default function Home() {
             color={"#CECED0"}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={4} lg={3} xl={2}
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={4}
+          lg={3}
+          xl={2}
           sx={{
             marginLeft: "10px",
             marginRight: "10px",
@@ -123,7 +153,13 @@ export default function Home() {
 
         <Grid xs={2}></Grid>
       </Grid>
-      <Grid container spacing={1}>
+      <Grid
+        container
+        spacing={1}
+        sx={{
+          marginLeft: "5px",
+        }}
+      >
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
           <Card onClick={() => console.log("Run")} title={"Run"} img={boyRun} />
         </Grid>

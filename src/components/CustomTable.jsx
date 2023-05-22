@@ -61,6 +61,7 @@ function getStyles(name, personName, theme) {
         : theme.typography.fontWeightMedium,
   };
 }
+
 const CustomTable = ({ data, handleEdit, handleDelete, handleStatus }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(6);
@@ -78,6 +79,7 @@ const CustomTable = ({ data, handleEdit, handleDelete, handleStatus }) => {
     { id: "endTime", label: "End Time" },
     { id: "action", label: "Action" },
   ];
+
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
 
@@ -377,7 +379,43 @@ const CustomTable = ({ data, handleEdit, handleDelete, handleStatus }) => {
                   margin: "5px",
                 }}
               >
-                Cancel
+                Stop
+              </Typography>
+              <Typography
+                gutterBottom
+                variant="h6"
+                component="button"
+                onClick={() => {
+                  console.log("btn click");
+                }}
+                sx={{
+                  backgroundColor: "#FE7F2D",
+                  width: "180px",
+                  color: "white",
+                  marginTop: "20px",
+                  padding: "10px",
+                  margin: "5px",
+                }}
+              >
+                Discard
+              </Typography>
+              <Typography
+                gutterBottom
+                variant="h6"
+                component="button"
+                onClick={() => {
+                  console.log("btn click");
+                }}
+                sx={{
+                  backgroundColor: "#0DC58A",
+                  width: "180px",
+                  color: "white",
+                  marginTop: "20px",
+                  padding: "10px",
+                  margin: "5px",
+                }}
+              >
+                Save
               </Typography>
             </div>
           </Grid>

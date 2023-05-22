@@ -314,8 +314,8 @@ export default function Dashboard() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
+    <Box sx={{ display: "flex", backgroundColor: "#F5F5F5" }}>
+      {/* <CssBaseline /> */}
       <AppBar
         position="fixed"
         open={open}
@@ -489,7 +489,7 @@ export default function Dashboard() {
       </Drawer>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, backgroundColor: "#F5F5F5", height: "200vh" }}
+        sx={{ flexGrow: 1, p: 3, backgroundColor: "#F5F5F5" }}
       >
         <DrawerHeader />
         {/* <Home /> */}

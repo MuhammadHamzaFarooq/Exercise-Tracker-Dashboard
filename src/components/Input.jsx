@@ -26,6 +26,7 @@ export const Input = ({ placeholder, type, onChange, _style, icon, value }) => {
           border: "none",
           outline: "none",
           borderRadius: "10px",
+          color: "#6F6C90",
         }}
       />
       <span

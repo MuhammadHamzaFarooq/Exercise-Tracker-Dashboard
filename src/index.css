@@ -8,3 +8,75 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@media (max-width: 768px) {
+  .landingImage{
+    display: none !important;
+  }
+  .landing-content-container{
+    width: 100vw !important;
+    justify-content: center;
+    align-items: center;
+  }
+}
+@media (max-width: 917px) {
+ .landing-btn-container{
+  width: 35% !important;
+  height: 15% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  margin-right: 10px  !important;
+ }
+ 
+}
+@media (max-width: 644px) {
+ .landing-btn-container{
+  width: 45% !important;
+  height: 15% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  margin-right: 10px  !important;
+  margin-top: 20px !important;
+ 
+ }
+ header{
+  display: flex;
+  flex-direction: column;
+ }
+ 
+}
+@media (max-width: 420px) {
+ .landing-btn-container{
+  width: 100% !important;
+  height: 15% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  margin-top: 20px !important;
+  text-align: center;
+  margin-right: 10px;
+ 
+ }
+ header{
+  display: flex;
+  flex-direction: column;
+ }
+ 
+}
+@media (max-width: 375px) {
+ .landing-btn-container{
+  width: 100% !important;
+  height: 15% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  margin-top: 20px !important;
+  text-align: center;
+  margin-right: 30px;
+ 
+ }
+ header{
+  display: flex;
+  flex-direction: column;
+ }
+ 
+}

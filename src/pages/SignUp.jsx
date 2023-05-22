@@ -6,6 +6,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import Input from "../components/Input";
 import img from "../assets/imgs/FitnessMainImg.png";
 import "./css/Login.css";
+import { Typography } from "@mui/material";
 
 const SignUp = () => {
   return (
@@ -34,7 +35,7 @@ const SignUp = () => {
             alignItems: "center",
           }}
         >
-          <h1
+          {/* <h1
             style={{
               marginTop: "15px",
               marginLeft: "20px",
@@ -43,7 +44,21 @@ const SignUp = () => {
             }}
           >
             Exercise Tracker{" "}
-          </h1>
+          </h1> */}
+          <Typography
+            variant="h4"
+            component="h2"
+            sx={{
+              fontWeight: "bold",
+              marginTop: "10px",
+              textAlign: "center",
+              marginTop: "15px",
+              marginLeft: "20px",
+              marginBottom: "20px",
+            }}
+          >
+            Exercise Tracker{" "}
+          </Typography>
           <hr
             style={{
               color: "#D9DBE9",
@@ -64,18 +79,32 @@ const SignUp = () => {
         >
           <div>
             <div>
-              <h1
+              {/* <h1
                 style={{
                   marginBottom: "10px",
                 }}
               >
                 Sign Up
-              </h1>
+              </h1> */}
+
+              <Typography
+                variant="h6"
+                component="h2"
+                sx={{
+                  fontWeight: "bold",
+                  marginTop: "10px",
+                  marginTop: "15px",
+                  marginBottom: "20px",
+                }}
+              >
+                Sign Up
+              </Typography>
             </div>
             <div>
               <p
                 style={{
                   marginBottom: "10px",
+                  color: "#6F6C90",
                 }}
               >
                 Log into your existing account of Exercise Tracker
@@ -90,12 +119,13 @@ const SignUp = () => {
               }}
             >
               <Input
-                _style={{}}
+                _style={{ color: "#6F6C90" }}
                 placeholder="Name"
                 icon={<AiOutlineUser />}
                 type="text"
                 onChange={(e) => console.log(e.target.value)}
                 value={"muhammad hamza farooq"}
+                
               />
             </div>
             <div
@@ -136,7 +166,7 @@ const SignUp = () => {
             >
               <Button
                 onClick={() => console.log("Login Click")}
-                title="Login"
+                title="Sign Up"
                 _style={{
                   backgroundColor: "#0DC58A",
                   border: "none",
@@ -167,7 +197,7 @@ const SignUp = () => {
                       cursor: "pointer",
                     }}
                   >
-                    Sign Up
+                    login
                   </button>
                 </span>
               </p>
