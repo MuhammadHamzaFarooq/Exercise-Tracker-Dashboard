@@ -9,6 +9,8 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Home from "./pages/Home";
+import Goals from "./pages/Goals";
+import DashboardLayout from "./components/DashboardLayout";
 
 export const routes = createBrowserRouter([
   {
@@ -32,12 +34,17 @@ export const routes = createBrowserRouter([
     element: <ProtectedRoutes />,
     children: [
       {
-        index: true,
-        element: <Dashboard />,
-      },
-      {
-        path: "Home",
-        element: <Home />,
+        element: <DashboardLayout />,
+        children: [
+          {
+            index: true,
+            element: <Home />,
+          },
+          {
+            path: "goals",
+            element: <Goals />,
+          },
+        ],
       },
     ],
   },

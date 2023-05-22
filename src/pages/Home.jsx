@@ -19,8 +19,13 @@ import { GiEgyptianWalk } from "react-icons/gi";
 export default function Home() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={8}>
-        <Grid xs={2}>
+      <Grid container spacing={2} >
+        <Grid item xs={12} sm={12} md={4} lg={3} xl={2}  
+          sx={{
+            marginLeft: "10px",
+            marginRight: "10px",
+          }}
+        >
           <CountCard
             icon={
               <GiRun
@@ -35,7 +40,12 @@ export default function Home() {
             color={"#ADEFB0"}
           />
         </Grid>
-        <Grid xs={2}>
+        <Grid item xs={12} sm={12} md={4} lg={3} xl={2}
+          sx={{
+            marginLeft: "10px",
+            marginRight: "10px",
+          }}
+        >
           <CountCard
             icon={
               <FaSwimmer
@@ -47,10 +57,15 @@ export default function Home() {
             }
             title={"Swim"}
             count={"203"}
-            color={"#ADEFB0"}
+            color={"#D4C6DF"}
           />
         </Grid>
-        <Grid xs={2}>
+        <Grid item xs={12} sm={12} md={4} lg={3} xl={2}
+          sx={{
+            marginLeft: "10px",
+            marginRight: "10px",
+          }}
+        >
           <CountCard
             icon={
               <GiEgyptianWalk
@@ -62,10 +77,15 @@ export default function Home() {
             }
             title={"Hike"}
             count={"273"}
-            color={"#ADEFB0"}
+            color={"#F7DEE7"}
           />
         </Grid>
-        <Grid xs={2}>
+        <Grid item xs={12} sm={12} md={4} lg={3} xl={2}
+          sx={{
+            marginLeft: "10px",
+            marginRight: "10px",
+          }}
+        >
           <CountCard
             icon={
               <BiCycling
@@ -77,10 +97,15 @@ export default function Home() {
             }
             title={"Bicycle Ride"}
             count={"303"}
-            color={"#ADEFB0"}
+            color={"#CECED0"}
           />
         </Grid>
-        <Grid xs={2}>
+        <Grid item xs={12} sm={12} md={4} lg={3} xl={2}
+          sx={{
+            marginLeft: "10px",
+            marginRight: "10px",
+          }}
+        >
           <CountCard
             icon={
               <RiWalkLine
@@ -92,45 +117,45 @@ export default function Home() {
             }
             title={"Walk"}
             count={"200"}
-            color={"#ADEFB0"}
+            color={"#C2FFE6"}
           />
         </Grid>
 
         <Grid xs={2}></Grid>
       </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={4}>
+      <Grid container spacing={1}>
+        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
           <Card onClick={() => console.log("Run")} title={"Run"} img={boyRun} />
         </Grid>
-        <Grid xs={4}>
+        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
           <Card
             onClick={() => console.log("Swim")}
             title={"Swim"}
             img={boySwim}
           />
         </Grid>
-        <Grid xs={4}>
+        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
           <Card
             onClick={() => console.log("Hike")}
             title={"Hike"}
             img={boyHike}
           />
         </Grid>
-        <Grid xs={4}>
+        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
           <Card
             onClick={() => console.log("Bicycle Ride")}
             title={"Bicycle Ride"}
             img={girlBicycleRide}
           />
         </Grid>
-        <Grid xs={4}>
+        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
           <Card
             onClick={() => console.log("Walk")}
             title={"Walk"}
             img={girlWalk}
           />
         </Grid>
-        <Grid xs={4}></Grid>
+        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}></Grid>
       </Grid>
     </Box>
   );

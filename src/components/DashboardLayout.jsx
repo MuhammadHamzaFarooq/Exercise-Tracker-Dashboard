@@ -22,9 +22,10 @@ import fitnessLogo from "../assets/imgs/Workout-bold.png";
 import AppsIcon from "@mui/icons-material/Apps";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Home from "./Home";
-import CustomTable from "../components/CustomTable";
-import { Link } from "react-router-dom";
+import CustomTable from "./CustomTable";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -301,9 +302,13 @@ const data = [
 ];
 
 // const data = [];
-export default function Dashboard() {
+export default function DashboardLayout() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log(location);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -314,7 +319,7 @@ export default function Dashboard() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", backgroundColor: "#F5F5F5" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -408,40 +413,55 @@ export default function Dashboard() {
           </IconButton>
         </DrawerHeader>
         <Divider />
+
         <List>
-          {["Home", "Goals"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                  color: "#0DC58A",
-                }}
-              >
-                <ListItemIcon
+          {["Home", "Goals"].map((text, index) => {
+            const isActive =
+              location.pathname === "/dashboard"
+                ? text === "Home"
+                : text === "Goals";
+
+            return (
+              <ListItem key={text} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    color: "#0DC58A",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                    color: isActive ? "white" : "#0DC58A",
+                    backgroundColor: isActive ? "#0DC58A" : "white",
+                  }}
+                  onClick={() => {
+                    text === "Home"
+                      ? navigate("/dashboard")
+                      : navigate("/dashboard/goals");
                   }}
                 >
-                  {index % 2 === 0 ? (
-                    <Link to={"/dashboard"}>
-                      <AppsIcon />
-                    </Link>
-                  ) : (
-                    <Link to={"/dashboard/goals"}>
-                      <FitnessCenterIcon />
-                    </Link>
-                  )}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: isActive ? "white" : "#0DC58A",
+                    }}
+                  >
+                    {index % 2 === 0 ? (
+                      <Link to={"/dashboard"}>
+                        <AppsIcon />
+                      </Link>
+                    ) : (
+                      <Link to={"/dashboard/goals"}>
+                        <FitnessCenterIcon />
+                      </Link>
+                    )}
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
         </List>
+
         <List
           sx={{
             display: "flex",
@@ -487,18 +507,17 @@ export default function Dashboard() {
           ))}
         </List>
       </Drawer>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, backgroundColor: "#F5F5F5", height: "200vh" }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         {/* <Home /> */}
-        <CustomTable
+        {/* <CustomTable
           data={data}
           handleEdit={() => console.log("edit Handler Click")}
           handleDelete={() => console.log("delete Handler Click")}
           handleStatus={() => console.log("Status Handler Click")}
-        />
+        /> */}
+
+        <Outlet />
       </Box>
     </Box>
   );
