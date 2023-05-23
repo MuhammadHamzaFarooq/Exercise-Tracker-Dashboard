@@ -27,7 +27,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import CustomModal from "./Modal";
+import CustomModal from "./CustomModal";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

@@ -48,6 +48,7 @@ export default function MediaCard({ img, onClick, title }) {
               left: "15px",
             }}
             size="large"
+            onClick={onClick}
           >
             START
           </Button>

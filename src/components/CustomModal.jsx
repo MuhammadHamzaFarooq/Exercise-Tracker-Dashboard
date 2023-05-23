@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Modal, Typography, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -9,8 +9,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useTheme } from "@mui/material/styles";
-
-const names = ["Bicycle Ride", "Hike", "Run", "Swim", "Walk"];
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -32,23 +30,26 @@ function getStyles(name, personName, theme) {
   };
 }
 
+const multipleChoices = ["Run", "Swim", "Hike", "Bicycle Ride", "Walk"];
+
 const CustomModal = ({
   statusModalOpen,
   setStatusModalOpen,
-  value,
-  setValue,
+  name,
+  setName,
+  description,
+  setDescription,
+  date,
+  setDate,
+  setDuration,
+  duration,
+  activity,
+  setActivity,
+  onClickHandler,
 }) => {
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
-
   const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setActivity(event.target.value);
   };
   return (
     <Modal open={statusModalOpen} onClose={() => setStatusModalOpen(false)}>
@@ -79,7 +80,7 @@ const CustomModal = ({
                 marginBottom: "10px",
               }}
             >
-              Edit Activity
+              create Activity
             </Typography>
           </header>
         </section>
@@ -96,13 +97,17 @@ const CustomModal = ({
               <TextField
                 label="Name"
                 id="outlined-size-normal"
-                defaultValue="Normal"
+                // defaultValue=""
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
 
               <TextField
                 label="Description"
                 id="outlined-size-normal"
-                defaultValue="Normal"
+                // defaultValue="Normal"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </div>
             <div
@@ -113,43 +118,68 @@ const CustomModal = ({
               <TextField
                 label="Duration"
                 id="outlined-size-normal"
-                defaultValue="Normal"
+                // defaultValue="Normal"
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
               />
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="Date"
-                  value={value}
-                  onChange={(newValue) => setValue(newValue)}
+                  value={date}
+                  onChange={(newValue) => setDate(newValue)}
                 />
               </LocalizationProvider>
             </div>
-            <div>
+            {/* <div>
               <FormControl sx={{ m: 1, width: 460, mt: 3 }}>
                 <Select
-                  multiple
-                  displayEmpty
-                  value={personName}
+                  value={activity}
                   onChange={handleChange}
                   input={<OutlinedInput />}
                   renderValue={(selected) => {
-                    if (selected.length === 0) {
-                      return <em>Placeholder</em>;
+                    if (!selected) {
+                      return <em>Select Activity Type</em>;
                     }
-
-                    return selected.join(", ");
+                    return selected;
                   }}
                   MenuProps={MenuProps}
                   inputProps={{ "aria-label": "Without label" }}
                   label="Activity Type"
                 >
-                  <MenuItem disabled value="">
-                    <em>Placeholder</em>
+                  <MenuItem disabled value="Select Activity Type">
+                    <em>Select Activity Type </em>
                   </MenuItem>
-                  {names.map((name) => (
+                  {multipleChoices.map((name) => (
                     <MenuItem
                       key={name}
                       value={name}
-                      style={getStyles(name, personName, theme)}
+                      style={getStyles(name, activity, theme)}
+                    >
+                      {name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div> */}
+            <div>
+              <FormControl sx={{ m: 1, width: 460, mt: 3 }}>
+                <Select
+                  displayEmpty
+                  value={activity}
+                  onChange={handleChange}
+                  input={<OutlinedInput />}
+                  MenuProps={MenuProps}
+                  inputProps={{ "aria-label": "Without label" }}
+                  label="Activity Type"
+                >
+                  <MenuItem disabled value="">
+                    <em>Select Activity Type</em>
+                  </MenuItem>
+                  {multipleChoices?.map((name) => (
+                    <MenuItem
+                      key={name}
+                      value={name}
+                      style={getStyles(name, activity, theme)}
                     >
                       {name}
                     </MenuItem>
@@ -172,9 +202,11 @@ const CustomModal = ({
             gutterBottom
             variant="h6"
             component="button"
-            onClick={() => {
-              console.log("btn click");
-            }}
+            // onClick={() => {
+            //   console.log("btn click");
+            //   setStatusModalOpen(!statusModalOpen);
+            // }}
+            onClick={onClickHandler}
             sx={{
               backgroundColor: "#0DC58A",
               width: "180px",
@@ -184,15 +216,13 @@ const CustomModal = ({
               margin: "5px",
             }}
           >
-            Start
+            Create Activity
           </Typography>
           <Typography
             gutterBottom
             variant="h6"
             component="button"
-            onClick={() => {
-              console.log("btn click");
-            }}
+            // onClick={onClickHandler}
             sx={{
               backgroundColor: "#778CA2",
               width: "180px",

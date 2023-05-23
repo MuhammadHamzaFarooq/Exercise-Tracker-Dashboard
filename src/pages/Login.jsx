@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { CiMail } from "react-icons/ci";
 import { FaLock } from "react-icons/fa";
 import Button from "../components/Button";
@@ -9,6 +9,49 @@ import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const validateEmail = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("Invalid email address");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const validatePassword = () => {
+    if (password.length < 8) {
+      setPasswordError("Password must be at least 8 characters long");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    // Validate email and password before submitting
+    validateEmail();
+    validatePassword();
+
+    // If there are no errors, proceed with form submission
+    if (!emailError && !passwordError) {
+      // Perform your form submission logic here
+      console.log("Form submitted successfully");
+      // navigate("/register");
+    }
+  };
+
   const navigate = useNavigate();
   return (
     <div
@@ -94,7 +137,7 @@ const Login = () => {
               </p>
             </div>
           </div>
-          <form action="">
+          <div>
             <div
               style={{
                 marginBottom: "20px",
@@ -106,9 +149,10 @@ const Login = () => {
                 placeholder="Email"
                 icon={<CiMail />}
                 type="email"
-                onChange={(e) => console.log(e.target.value)}
-                value={"mhamza2021999@gmail.com"}
+                onChange={handleEmailChange}
+                value={email}
               />
+              {emailError && <p className="error">{emailError}</p>}
             </div>
             <div
               style={{
@@ -121,9 +165,10 @@ const Login = () => {
                 placeholder="Password"
                 icon={<FaLock />}
                 type="password"
-                onChange={(e) => console.log(e.target.value)}
-                value={"1234567890"}
+                onChange={handlePasswordChange}
+                value={password}
               />
+              {passwordError && <p className="error">{passwordError}</p>}
             </div>
             <div
               style={{
@@ -132,7 +177,7 @@ const Login = () => {
               }}
             >
               <Button
-                onClick={() => navigate("/dashboard")}
+                onClick={handleSubmit}
                 title="Login"
                 _style={{
                   backgroundColor: "#0DC58A",
@@ -170,7 +215,7 @@ const Login = () => {
                 </span>
               </p>
             </div>
-          </form>
+          </div>
         </section>
       </div>
       {/* Image Box  */}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { CiMail } from "react-icons/ci";
 import { FaLock } from "react-icons/fa";
 import Button from "../components/Button";
@@ -10,6 +10,76 @@ import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const validateName = () => {
+    if (name.trim() === "") {
+      setNameError("Name is required");
+    } else {
+      setNameError("");
+    }
+  };
+
+  const validateEmail = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("Invalid email address");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const validatePassword = () => {
+    if (password.length < 8) {
+      setPasswordError("Password must be at least 8 characters long");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    // Validate name, email, and password before submitting
+    validateName();
+    validateEmail();
+    validatePassword();
+
+    // If there are no errors, proceed with form submission
+    if (!nameError && !emailError && !passwordError) {
+      const payload = {
+        name: name,
+        email: email,
+        password: password,
+      };
+
+      dispatch(signUp(payload))
+        .then(() => {
+          console.log("Sign up successful");
+          navigate("/login");
+        })
+        .catch((error) => {
+          console.error("Sign up error:", error);
+          // Handle error here
+        });
+    }
+  };
+
   const navigate = useNavigate();
   return (
     <div
@@ -37,16 +107,6 @@ const SignUp = () => {
             alignItems: "center",
           }}
         >
-          {/* <h1
-            style={{
-              marginTop: "15px",
-              marginLeft: "20px",
-              marginBottom: "20px",
-              textAlign: "center",
-            }}
-          >
-            Exercise Tracker{" "}
-          </h1> */}
           <Typography
             variant="h4"
             component="h2"
@@ -81,14 +141,6 @@ const SignUp = () => {
         >
           <div>
             <div>
-              {/* <h1
-                style={{
-                  marginBottom: "10px",
-                }}
-              >
-                Sign Up
-              </h1> */}
-
               <Typography
                 variant="h6"
                 component="h2"
@@ -113,7 +165,7 @@ const SignUp = () => {
               </p>
             </div>
           </div>
-          <form action="">
+          <div>
             <div
               style={{
                 marginBottom: "20px",
@@ -125,9 +177,11 @@ const SignUp = () => {
                 placeholder="Name"
                 icon={<AiOutlineUser />}
                 type="text"
-                onChange={(e) => console.log(e.target.value)}
-                value={"muhammad hamza farooq"}
+                onChange={handleNameChange}
+                onBlur={validateName}
+                value={name}
               />
+              {nameError && <p className="error">{nameError}</p>}
             </div>
             <div
               style={{
@@ -140,9 +194,11 @@ const SignUp = () => {
                 placeholder="Email"
                 icon={<CiMail />}
                 type="email"
-                onChange={(e) => console.log(e.target.value)}
-                value={"mhamza2021999@gmail.com"}
+                onChange={handleEmailChange}
+                onBlur={validateEmail}
+                value={email}
               />
+              {emailError && <p className="error">{emailError}</p>}
             </div>
             <div
               style={{
@@ -155,9 +211,11 @@ const SignUp = () => {
                 placeholder="Password"
                 icon={<FaLock />}
                 type="password"
-                onChange={(e) => console.log(e.target.value)}
-                value={"1234567890"}
+                onChange={handlePasswordChange}
+                onBlur={validatePassword}
+                value={password}
               />
+              {passwordError && <p className="error">{passwordError}</p>}
             </div>
             <div
               style={{
@@ -166,7 +224,7 @@ const SignUp = () => {
               }}
             >
               <Button
-                onClick={() => navigate("/login")}
+                onClick={handleSubmit}
                 title="Sign Up"
                 _style={{
                   backgroundColor: "#0DC58A",
@@ -190,7 +248,7 @@ const SignUp = () => {
                 Don’t have an account?{" "}
                 <span>
                   <button
-                     onClick={() => navigate("/login")}
+                    onClick={() => navigate("/login")}
                     style={{
                       color: "#2C5688",
                       backgroundColor: "white",
@@ -204,7 +262,7 @@ const SignUp = () => {
                 </span>
               </p>
             </div>
-          </form>
+          </div>
         </section>
       </div>
       {/* Image Box  */}
