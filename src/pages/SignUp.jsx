@@ -74,12 +74,13 @@ const SignUp = () => {
         email: email,
         password: password,
       };
+      console.log();
       dispatch(signup(payload))
         .then((res) => {
           console.log("Sign up successful", res);
-          Swal.fire("Good job!", "SignUp  Successfully", "success");
           delay(2000);
           navigate("/register");
+          Swal.fire("Good job!", "SignUp  Successfully", "success");
         })
         .catch((error) => {
           console.error("Sign up error:", error);

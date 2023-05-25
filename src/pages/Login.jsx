@@ -62,7 +62,7 @@ const Login = () => {
           console.log("Sign up successful", res);
           Swal.fire("Good job!", "Login successfully", "success");
           delay(2000);
-          navigate("/dashboard");
+          location.replace("/dashboard");
         })
         .catch((error) => {
           console.error("Sign up error:", error);

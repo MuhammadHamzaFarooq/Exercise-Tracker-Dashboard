@@ -13,7 +13,9 @@ import Goals from "./pages/Goals";
 import DashboardLayout from "./components/DashboardLayout";
 import store from "./store/store";
 import { Provider } from "react-redux";
-export const routes = createBrowserRouter([
+let Token = localStorage.getItem("token");
+
+export const routes1 = createBrowserRouter([
   {
     path: "/",
     element: <App />,
@@ -26,6 +28,13 @@ export const routes = createBrowserRouter([
     path: "/register",
     element: <SignUp />,
   },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
+]);
+
+const routes2 = createBrowserRouter([
   {
     path: "*",
     element: <NotFound />,
@@ -53,7 +62,7 @@ export const routes = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <React.StrictMode>
-      <RouterProvider router={routes} />
+      <RouterProvider router={Token == null ? routes1 : routes2} />
     </React.StrictMode>
   </Provider>
 );
