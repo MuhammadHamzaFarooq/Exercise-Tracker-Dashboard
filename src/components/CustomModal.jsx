@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Modal, Typography, TextField } from "@mui/material";
+import {
+  Grid,
+  Modal,
+  Typography,
+  TextField,
+  useMediaQuery,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
@@ -57,35 +63,47 @@ const CustomModal = ({
   const handleChange = (event) => {
     setActivity(event.target.value);
   };
+
+  // Add responsive styles based on `isSmallScreen` value
+  // const modalContainerStyle = isSmallScreen
+  //   ? {
+  //       width: "90%",
+  //       height: "80%",
+  //       display: "flex",
+  //       flexDirection: "column",
+  //     }
+  //   : {
+  //       width: "40%",
+  //       height: "70%",
+  //     };
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const modalContainerStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#fff",
+    display: "flex",
+    flexDirection: "column",
+    p: 4,
+    borderRadius: "10px",
+    padding: "20px",
+    width: isSmallScreen ? "90%" : "auto",
+    height: isSmallScreen ? "80%" : "auto",
+    // Add additional responsive styles here
+  };
+
+  const headerTextStyle = {
+    textAlign: isSmallScreen ? "center" : "start",
+    marginBottom: "10px",
+  };
   return (
     <Modal open={statusModalOpen} onClose={() => setStatusModalOpen(false)}>
-      <Grid
-        container
-        justifyContent="center"
-        alignItems="center"
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          backgroundColor: "#fff",
-          width: "40%",
-          height: "70%",
-          display: "flex",
-          flexDirection: "column",
-          p: 4,
-          borderRadius: "10px",
-        }}
-      >
+      <div style={modalContainerStyle}>
         <section>
           <header>
-            <Typography
-              variant="h4"
-              sx={{
-                textAlign: "start",
-                marginBottom: "10px",
-              }}
-            >
+            <Typography variant="h4" sx={headerTextStyle}>
               create Activity
             </Typography>
           </header>
@@ -218,7 +236,7 @@ const CustomModal = ({
             display: "flex",
             justifyContent: "space-between",
             // backgroundColor: "gray",
-            width: "76%",
+            width: "100%",
             marginTop: "10px",
           }}
         >
@@ -259,7 +277,7 @@ const CustomModal = ({
             Cancel
           </Typography>
         </div>
-      </Grid>
+      </div>
     </Modal>
   );
 };
