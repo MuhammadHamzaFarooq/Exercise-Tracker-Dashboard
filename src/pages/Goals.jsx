@@ -1,5 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CustomTable from "../components/CustomTable";
+import {
+  deleteActivity,
+  fetchActivities,
+} from "../features/activity/activitySlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -209,12 +214,23 @@ const data = [
 ];
 
 const Goals = () => {
+  // const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
+
+  const dispatch = useDispatch();
+  const activity = useSelector((state) => state.activity);
+
+  useEffect(() => {
+    dispatch(fetchActivities());
+  }, []);
+
+  console.log(activity);
   return (
     <>
       <CustomTable
-        data={data}
-        handleEdit={() => console.log("edit Handler Click")}
-        handleDelete={() => console.log("delete Handler Click")}
+        data={activity?.activities ? activity?.activities : []}
+        handleEdit={(item) => console.log("edit Handler Click", item)}
+        handleDelete={(item) => dispatch(deleteActivity(item?._id))}
         handleStatus={() => console.log("Status Handler Click")}
       />
     </>

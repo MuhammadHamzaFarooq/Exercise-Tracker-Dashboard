@@ -11,6 +11,13 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useTheme } from "@mui/material/styles";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { dateFormatter, timeFormatter } from "../utils/helper";
+import dayjs from "dayjs";
+import { updateActivityApi } from "../features/activity/activityApi";
+import { useDispatch } from "react-redux";
+import {
+  fetchActivities,
+  updateActivity,
+} from "../features/activity/activitySlice";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -25,7 +32,7 @@ const MenuProps = {
 function getStyles(name, personName, theme) {
   return {
     fontWeight:
-      personName.indexOf(name) === -1
+      personName?.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
@@ -33,7 +40,7 @@ function getStyles(name, personName, theme) {
 
 const multipleChoices = ["Run", "Swim", "Hike", "Bicycle Ride", "Walk"];
 
-const CustomModal = ({
+const EditCustomModal = ({
   statusModalOpen,
   setStatusModalOpen,
   name,
@@ -42,21 +49,56 @@ const CustomModal = ({
   setDescription,
   date,
   setDate,
-  setDuration,
-  duration,
-  activity,
-  setActivity,
   startTime,
   setStartTime,
   endTime,
   setEndTime,
-  onClickHandler,
-  onClickCancelHandler,
+  duration,
+  setDuration,
+  activity,
+  setActivity,
+  selectedItem,
+  setSelectedItem,
 }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const handleChange = (event) => {
     setActivity(event.target.value);
   };
+
+  const obj = {
+    name,
+    description,
+    date: dateFormatter(date),
+    startTime: timeFormatter(startTime),
+    endTime: timeFormatter(endTime),
+    duration,
+    activityType: activity,
+  };
+  const onClickEditHandler = async () => {
+    const updateObj = {
+      ...selectedItem,
+      ...obj,
+    };
+    dispatch(updateActivity(selectedItem?._id, updateObj));
+    setName("");
+    setActivity([]);
+    setDate("");
+    setStartTime(null);
+    setEndTime(null);
+    setDuration("");
+    setDescription("");
+    await setTimeout(() => {}, 5000);
+
+    dispatch(fetchActivities());
+
+    setStatusModalOpen(!statusModalOpen);
+  };
+  const onClickCancelHandler = () => {
+    console.log("Cancel OnClick Handler");
+    setStatusModalOpen(!statusModalOpen);
+  };
+  console.log(activity);
   return (
     <Modal open={statusModalOpen} onClose={() => setStatusModalOpen(false)}>
       <Grid
@@ -86,7 +128,7 @@ const CustomModal = ({
                 marginBottom: "10px",
               }}
             >
-              create Activity
+              Edit Activity
             </Typography>
           </header>
         </section>
@@ -145,12 +187,14 @@ const CustomModal = ({
                 <TimePicker
                   label="Start Time"
                   value={startTime}
-                  onChange={(newValue) => setStartTime(timeFormatter(newValue))}
+                  // onChange={(newValue) => setStartTime(timeFormatter(newValue))}
+                  onChange={(newValue) => setStartTime(newValue)}
                 />
                 <TimePicker
                   label="End Time"
                   value={endTime}
-                  onChange={(newValue) => setEndTime(timeFormatter(newValue))}
+                  //   onChange={(newValue) => setEndTime(timeFormatter(newValue))}
+                  onChange={(newValue) => setEndTime(newValue)}
                 />
               </LocalizationProvider>
             </div>
@@ -230,7 +274,7 @@ const CustomModal = ({
             //   console.log("btn click");
             //   setStatusModalOpen(!statusModalOpen);
             // }}
-            onClick={onClickHandler}
+            onClick={onClickEditHandler}
             sx={{
               backgroundColor: "#0DC58A",
               width: "180px",
@@ -240,7 +284,7 @@ const CustomModal = ({
               margin: "5px",
             }}
           >
-            Create Activity
+            Edit Activity
           </Typography>
           <Typography
             gutterBottom
@@ -264,4 +308,4 @@ const CustomModal = ({
   );
 };
 
-export default CustomModal;
+export default EditCustomModal;

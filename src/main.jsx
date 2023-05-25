@@ -11,7 +11,8 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import Home from "./pages/Home";
 import Goals from "./pages/Goals";
 import DashboardLayout from "./components/DashboardLayout";
-
+import store from "./store/store";
+import { Provider } from "react-redux";
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -50,7 +51,9 @@ export const routes = createBrowserRouter([
   },
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <RouterProvider router={routes} />
-  </React.StrictMode>
+  <Provider store={store}>
+    <React.StrictMode>
+      <RouterProvider router={routes} />
+    </React.StrictMode>
+  </Provider>
 );

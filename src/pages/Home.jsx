@@ -16,29 +16,93 @@ import { BiCycling } from "react-icons/bi";
 import { RiWalkLine } from "react-icons/ri";
 import { GiEgyptianWalk } from "react-icons/gi";
 import CustomModal from "../components/CustomModal";
+import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+import { createActivity } from "../features/activity/activitySlice";
+import { delay } from "../utils/helper";
 
 export default function Home() {
   const [statusModalOpen, setStatusModalOpen] = React.useState(false);
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
+  const [startTime, setStartTime] = React.useState(null);
+  const [endTime, setEndTime] = React.useState(null);
   const [date, setDate] = React.useState("");
   const [duration, setDuration] = React.useState("");
   const [activity, setActivity] = React.useState([]);
 
+  const dispatch = useDispatch();
+
   React.useEffect(() => {
     console.log(
-      "name,description,date,duration,activity => ",
+      "name, description, date, duration, activity,startTime,endTime => ",
       name,
       description,
       date,
       duration,
-      activity
+      activity,
+      startTime,
+      endTime
     );
-  }, [name, description, date, duration, activity]);
+  }, [name, description, date, duration, activity, startTime, endTime]);
 
-  const handler = () => {
+  const createActivityHandler = () => {
     // api calling
     console.log("handler click");
+    // Validate required fields
+    if (
+      !name ||
+      !description ||
+      !date ||
+      !startTime ||
+      !endTime ||
+      !duration ||
+      !activity
+    ) {
+      console.log("Please fill in all the required fields.");
+      delay(2000);
+      setStatusModalOpen(!statusModalOpen);
+      Swal.fire("Oops !", "Please fill in all the required fields.", "error");
+      return;
+    }
+
+    // Additional validation logic...
+
+    // Prepare the payload
+    const payload = {
+      name,
+      description,
+      date,
+      startTime,
+      endTime,
+      duration,
+      activityType: activity,
+    };
+
+    // Dispatch the createActivity action
+    dispatch(createActivity(payload))
+      .then((res) => {
+        console.log("Activity Created", res);
+        delay(2000);
+        Swal.fire("Good job!", "Activity Created  Successfully", "success");
+        setName("");
+        setActivity("");
+        setDate("");
+        setDescription("");
+        setEndTime("");
+        setStartTime("");
+        setDuration("");
+        setStatusModalOpen(!statusModalOpen);
+      })
+      .catch((error) => {
+        console.error("Sign up error:", error);
+        // Handle error here
+      });
+  };
+
+  const cancelHandler = () => {
+    // api calling
+    setStatusModalOpen(!statusModalOpen);
   };
 
   return (
@@ -194,28 +258,32 @@ export default function Home() {
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
             <Card
-              onClick={() => console.log("Swim")}
+              // onClick={() => console.log("Swim")}
+              onClick={() => setStatusModalOpen(!statusModalOpen)}
               title={"Swim"}
               img={boySwim}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
             <Card
-              onClick={() => console.log("Hike")}
+              // onClick={() => console.log("Hike")}
+              onClick={() => setStatusModalOpen(!statusModalOpen)}
               title={"Hike"}
               img={boyHike}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
             <Card
-              onClick={() => console.log("Bicycle Ride")}
+              // onClick={() => console.log("Bicycle Ride")}
+              onClick={() => setStatusModalOpen(!statusModalOpen)}
               title={"Bicycle Ride"}
               img={girlBicycleRide}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
             <Card
-              onClick={() => console.log("Walk")}
+              // onClick={() => console.log("Walk")}
+              onClick={() => setStatusModalOpen(!statusModalOpen)}
               title={"Walk"}
               img={girlWalk}
             />
@@ -234,10 +302,15 @@ export default function Home() {
           date={date}
           setDate={setDate}
           setDuration={setDuration}
+          startTime={startTime}
+          setStartTime={setStartTime}
+          endTime={endTime}
+          setEndTime={setEndTime}
           duration={duration}
           activity={activity}
           setActivity={setActivity}
-          onClickHandler={handler}
+          onClickHandler={createActivityHandler}
+          onClickCancelHandler={cancelHandler}
         />
       )}
     </>

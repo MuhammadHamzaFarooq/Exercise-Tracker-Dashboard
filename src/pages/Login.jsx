@@ -7,12 +7,18 @@ import img from "../assets/imgs/FitnessMainImg.png";
 import "./css/Login.css";
 import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { login } from "../features/auth/authSlice";
+import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+import { delay } from "../utils/helper";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  const dispatch = useDispatch();
 
   const validateEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -47,8 +53,22 @@ const Login = () => {
     // If there are no errors, proceed with form submission
     if (!emailError && !passwordError) {
       // Perform your form submission logic here
+      const payload = {
+        email,
+        password,
+      };
+      dispatch(login(payload))
+        .then((res) => {
+          console.log("Sign up successful", res);
+          Swal.fire("Good job!", "Login successfully", "success");
+          delay(2000);
+          navigate("/dashboard");
+        })
+        .catch((error) => {
+          console.error("Sign up error:", error);
+          // Handle error here
+        });
       console.log("Form submitted successfully");
-      // navigate("/register");
     }
   };
 

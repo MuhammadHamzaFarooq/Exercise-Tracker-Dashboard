@@ -8,6 +8,10 @@ import img from "../assets/imgs/FitnessMainImg.png";
 import "./css/Login.css";
 import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { signup } from "../features/auth/authSlice";
+import Swal from "sweetalert2";
+import { delay } from "../utils/helper";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -16,6 +20,8 @@ const SignUp = () => {
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  const dispatch = useDispatch();
 
   const validateName = () => {
     if (name.trim() === "") {
@@ -55,6 +61,7 @@ const SignUp = () => {
   };
 
   const handleSubmit = () => {
+    console.log("handleSubmit Click");
     // Validate name, email, and password before submitting
     validateName();
     validateEmail();
@@ -67,11 +74,12 @@ const SignUp = () => {
         email: email,
         password: password,
       };
-
-      dispatch(signUp(payload))
-        .then(() => {
-          console.log("Sign up successful");
-          navigate("/login");
+      dispatch(signup(payload))
+        .then((res) => {
+          console.log("Sign up successful", res);
+          Swal.fire("Good job!", "SignUp  Successfully", "success");
+          delay(2000);
+          navigate("/register");
         })
         .catch((error) => {
           console.error("Sign up error:", error);
