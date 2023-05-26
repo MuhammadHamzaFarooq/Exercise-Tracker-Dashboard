@@ -84,7 +84,6 @@ export default function Home() {
       .then((res) => {
         console.log("Activity Created", res);
         delay(2000);
-        Swal.fire("Good job!", "Activity Created  Successfully", "success");
         setName("");
         setActivity("");
         setDate("");
@@ -92,6 +91,7 @@ export default function Home() {
         setEndTime("");
         setStartTime("");
         setDuration("");
+        Swal.fire("Good job!", "Activity Created  Successfully", "success");
         setStatusModalOpen(!statusModalOpen);
       })
       .catch((error) => {

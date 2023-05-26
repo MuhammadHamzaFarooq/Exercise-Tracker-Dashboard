@@ -306,7 +306,7 @@ export default function DashboardLayout() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
   console.log(location);
 
@@ -481,6 +481,11 @@ export default function DashboardLayout() {
               }}
             >
               <ListItemButton
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  localStorage.clear();
+                  location.replace("/login");
+                }}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",

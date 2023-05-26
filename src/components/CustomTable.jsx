@@ -204,7 +204,7 @@ const CustomTable = ({ data, handleEdit, handleDelete, handleStatus }) => {
             }}
           >
             <TableRow>
-              {columns.map((column) => (
+              {columns?.map((column) => (
                 <TableCell key={column.id}>{column.label}</TableCell>
               ))}
             </TableRow>
@@ -217,7 +217,7 @@ const CustomTable = ({ data, handleEdit, handleDelete, handleStatus }) => {
           >
             {getPaginatedData().map((item) => (
               <TableRow
-                key={item.id}
+                key={item?._id}
                 sx={{
                   marginTop: "20px",
                 }}
@@ -234,7 +234,7 @@ const CustomTable = ({ data, handleEdit, handleDelete, handleStatus }) => {
                       marginRight: "10px",
                     }}
                   >
-                    <Avatar alt={item.id} src={item.url} />
+                    <Avatar alt={item?._id} src={item?.url} />
                   </span>
                   <span>{item.activityType}</span>
                 </TableCell>

@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const NotFound = () => {
+  let token = localStorage.getItem("token");
+  useEffect(() => {
+    if (token) {
+      location.replace("/dashboard");
+    } else {
+      location.replace("/login");
+    }
+  }, []);
   // write UseEffect Logic
-  return <div>NotFound</div>;
+  return <div></div>;
 };
 
 export default NotFound;

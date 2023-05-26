@@ -90,8 +90,8 @@ const SignUp = () => {
         .then((res) => {
           console.log("Sign up successful", res);
           delay(2000);
-          location.replace("/login");
           Swal.fire("Good job!", "SignUp  Successfully", "success");
+          location.replace("/login");
         })
         .catch((error) => {
           console.error("Sign up error:", error);
