@@ -11,13 +11,14 @@ import { login } from "../features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { delay } from "../utils/helper";
+import { CircularProgress } from "@mui/material";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-
+  const [isLoading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const validateEmail = () => {
@@ -51,7 +52,10 @@ const Login = () => {
     validatePassword();
 
     // If there are no errors, proceed with form submission
-    if (!emailError && !passwordError) {
+    // If there are no errors, proceed with form submission
+    if (!emailError && !passwordError && email && password) {
+      setLoading(true);
+
       // Perform your form submission logic here
       const payload = {
         email,
@@ -67,10 +71,41 @@ const Login = () => {
         .catch((error) => {
           console.error("Sign up error:", error);
           // Handle error here
+        })
+        .finally(() => {
+          setLoading(false);
         });
       console.log("Form submitted successfully");
+    } else {
+      Swal.fire("Oops!", "Login Failed", "error");
     }
   };
+  // const handleSubmit = () => {
+  //   // Validate email and password before submitting
+  //   validateEmail();
+  //   validatePassword();
+
+  //   // If there are no errors, proceed with form submission
+  //   if (!emailError && !passwordError) {
+  //     // Perform your form submission logic here
+  //     const payload = {
+  //       email,
+  //       password,
+  //     };
+  //     dispatch(login(payload))
+  //       .then((res) => {
+  //         console.log("Sign up successful", res);
+  //         Swal.fire("Good job!", "Login successfully", "success");
+  //         delay(2000);
+  //         location.replace("/dashboard");
+  //       })
+  //       .catch((error) => {
+  //         console.error("Sign up error:", error);
+  //         // Handle error here
+  //       });
+  //     console.log("Form submitted successfully");
+  //   }
+  // };
 
   const navigate = useNavigate();
   return (
@@ -196,7 +231,7 @@ const Login = () => {
                 marginTop: "30px",
               }}
             >
-              <Button
+              {/* <Button
                 onClick={handleSubmit}
                 title="Login"
                 _style={{
@@ -208,6 +243,20 @@ const Login = () => {
                   borderRadius: "50px",
                   color: "white",
                 }}
+              /> */}
+              <Button
+                onClick={handleSubmit}
+                title={isLoading ? <CircularProgress size={24} /> : "Login"}
+                _style={{
+                  backgroundColor: "#0DC58A",
+                  border: "none",
+                  width: "100%",
+                  padding: "15px",
+                  textAlignCenter: "center",
+                  borderRadius: "50px",
+                  color: "white",
+                }}
+                disabled={isLoading}
               />
             </div>
             <div

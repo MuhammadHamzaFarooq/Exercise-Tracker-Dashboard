@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { signup } from "../features/auth/authSlice";
 import Swal from "sweetalert2";
 import { delay } from "../utils/helper";
+import { CircularProgress } from "@mui/material";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -20,6 +21,7 @@ const SignUp = () => {
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -66,9 +68,18 @@ const SignUp = () => {
     validateName();
     validateEmail();
     validatePassword();
-
     // If there are no errors, proceed with form submission
-    if (!nameError && !emailError && !passwordError) {
+    if (
+      !nameError &&
+      !emailError &&
+      !passwordError &&
+      email &&
+      password &&
+      name
+    ) {
+      setLoading(true);
+
+      // Perform your form submission logic here
       const payload = {
         name: name,
         email: email,
@@ -79,13 +90,20 @@ const SignUp = () => {
         .then((res) => {
           console.log("Sign up successful", res);
           delay(2000);
-          navigate("/register");
+          location.replace("/login");
           Swal.fire("Good job!", "SignUp  Successfully", "success");
         })
         .catch((error) => {
           console.error("Sign up error:", error);
           // Handle error here
         });
+      console.log("Form submitted successfully");
+    } else {
+      Swal.fire("Oops!", "SignUp Failed", "error");
+    }
+
+    // If there are no errors, proceed with form submission
+    if (!nameError && !emailError && !passwordError) {
     }
   };
 
@@ -232,7 +250,7 @@ const SignUp = () => {
                 marginTop: "30px",
               }}
             >
-              <Button
+              {/* <Button
                 onClick={handleSubmit}
                 title="Sign Up"
                 _style={{
@@ -244,6 +262,20 @@ const SignUp = () => {
                   borderRadius: "50px",
                   color: "white",
                 }}
+              /> */}
+              <Button
+                title={isLoading ? <CircularProgress size={24} /> : "SignUp"}
+                onClick={handleSubmit}
+                _style={{
+                  backgroundColor: "#0DC58A",
+                  border: "none",
+                  width: "100%",
+                  padding: "15px",
+                  textAlignCenter: "center",
+                  borderRadius: "50px",
+                  color: "white",
+                }}
+                disabled={isLoading}
               />
             </div>
             <div
