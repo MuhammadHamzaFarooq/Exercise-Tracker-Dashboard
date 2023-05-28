@@ -57,6 +57,7 @@ export const {
   logout,
 } = authSlice.actions;
 
+
 export const signup = (userData) => async (dispatch) => {
   try {
     dispatch(signupStart());

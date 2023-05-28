@@ -17,6 +17,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useTheme } from "@mui/material/styles";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { dateFormatter, timeFormatter } from "../utils/helper";
+import { TurnedIn } from "@mui/icons-material";
+import CircularProgress from "@mui/material/CircularProgress";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -58,8 +60,14 @@ const CustomModal = ({
   setEndTime,
   onClickHandler,
   onClickCancelHandler,
+  handleStartTimeChange,
+  handleEndTimeChange,
+  timeValidationError,
+  setTimeValidationError,
+  loading,
 }) => {
   const theme = useTheme();
+
   const handleChange = (event) => {
     setActivity(event.target.value);
   };
@@ -98,6 +106,7 @@ const CustomModal = ({
     textAlign: isSmallScreen ? "center" : "start",
     marginBottom: "10px",
   };
+
   return (
     <Modal open={statusModalOpen} onClose={() => setStatusModalOpen(false)}>
       <div style={modalContainerStyle}>
@@ -151,10 +160,11 @@ const CustomModal = ({
                   label="Date"
                   value={date}
                   onChange={(newValue) => setDate(dateFormatter(newValue))}
+                  disablePast
                 />
               </LocalizationProvider>
             </div>
-            <div
+            {/* <div
               style={{
                 marginTop: "10px",
               }}
@@ -171,6 +181,30 @@ const CustomModal = ({
                   onChange={(newValue) => setEndTime(timeFormatter(newValue))}
                 />
               </LocalizationProvider>
+            </div> */}
+            <div
+              style={{
+                marginTop: "10px",
+              }}
+            >
+              {/* ... other text fields ... */}
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <TimePicker
+                  label="Start Time"
+                  value={startTime}
+                  onChange={handleStartTimeChange} // Update event handler
+                />
+                <TimePicker
+                  label="End Time"
+                  value={endTime}
+                  onChange={handleEndTimeChange} // Update event handler
+                />
+              </LocalizationProvider>
+              {timeValidationError && (
+                <Typography variant="body2" color="error">
+                  Start time and end time must be different.
+                </Typography>
+              )}
             </div>
             {/* <div>
               <FormControl sx={{ m: 1, width: 460, mt: 3 }}>
@@ -257,8 +291,9 @@ const CustomModal = ({
               padding: "10px",
               margin: "5px",
             }}
+            disabled={loading === true ? true : false}
           >
-            Create Activity
+            {loading ? <CircularProgress /> : <span> Create Activity</span>}
           </Typography>
           <Typography
             gutterBottom

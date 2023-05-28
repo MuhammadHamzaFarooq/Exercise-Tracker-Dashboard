@@ -65,6 +65,7 @@ const CustomTable = ({ data, handleEdit, handleDelete, handleStatus }) => {
   const [date, setDate] = useState("");
   const [duration, setDuration] = React.useState("");
   const [activity, setActivity] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
   const columns = [
     { id: "activityType", label: "Activity Type" },
     { id: "name", label: "Name" },

@@ -19,7 +19,7 @@ import CustomModal from "../components/CustomModal";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { createActivity } from "../features/activity/activitySlice";
-import { delay } from "../utils/helper";
+import { delay, timeFormatter } from "../utils/helper";
 
 export default function Home() {
   const [statusModalOpen, setStatusModalOpen] = React.useState(false);
@@ -30,7 +30,28 @@ export default function Home() {
   const [date, setDate] = React.useState("");
   const [duration, setDuration] = React.useState("");
   const [activity, setActivity] = React.useState([]);
+  const [timeValidationError, setTimeValidationError] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
+  const handleStartTimeChange = (newValue) => {
+    setStartTime(timeFormatter(newValue));
+
+    if (endTime && newValue && newValue.valueOf() === endTime.valueOf()) {
+      setTimeValidationError(true);
+    } else {
+      setTimeValidationError(false);
+    }
+  };
+
+  const handleEndTimeChange = (newValue) => {
+    setEndTime(timeFormatter(newValue));
+
+    if (startTime && newValue && newValue.valueOf() === startTime.valueOf()) {
+      setTimeValidationError(true);
+    } else {
+      setTimeValidationError(false);
+    }
+  };
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -47,8 +68,12 @@ export default function Home() {
   }, [name, description, date, duration, activity, startTime, endTime]);
 
   const createActivityHandler = () => {
+    setLoading(true);
     // api calling
     console.log("handler click");
+    if (timeValidationError) {
+      return; // Prevent editing if there is a time validation error
+    }
     // Validate required fields
     if (
       !name ||
@@ -91,11 +116,14 @@ export default function Home() {
         setEndTime("");
         setStartTime("");
         setDuration("");
+        setLoading(false);
         Swal.fire("Good job!", "Activity Created  Successfully", "success");
         setStatusModalOpen(!statusModalOpen);
       })
       .catch((error) => {
+        setLoading(false);
         console.error("Sign up error:", error);
+        Swal.fire("Oops!", error.message, "error");
         // Handle error here
       });
   };
@@ -311,6 +339,11 @@ export default function Home() {
           setActivity={setActivity}
           onClickHandler={createActivityHandler}
           onClickCancelHandler={cancelHandler}
+          handleStartTimeChange={handleStartTimeChange}
+          handleEndTimeChange={handleEndTimeChange}
+          timeValidationError={timeValidationError}
+          setTimeValidationError={setTimeValidationError}
+          loading={loading}
         />
       )}
     </>

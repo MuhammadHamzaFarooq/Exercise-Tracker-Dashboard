@@ -13,6 +13,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { dateFormatter, timeFormatter } from "../utils/helper";
 import dayjs from "dayjs";
 import { updateActivityApi } from "../features/activity/activityApi";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useDispatch } from "react-redux";
 import {
   fetchActivities,
@@ -175,6 +176,7 @@ const EditCustomModal = ({
                   label="Date"
                   value={date}
                   onChange={(newValue) => setDate(dateFormatter(newValue))}
+                  disablePast
                 />
               </LocalizationProvider>
             </div>
