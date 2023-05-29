@@ -73,9 +73,37 @@ const EditCustomModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const [nameError, setNameError] = useState("");
   const [durationError, setDurationError] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
   const handleChange = (event) => {
     setActivity(event.target.value);
   };
+
+  useEffect(() => {
+    setIsButtonDisabled(
+      !(
+        name.trim() &&
+        description.trim() &&
+        date &&
+        startTime &&
+        endTime &&
+        duration.trim() &&
+        activity &&
+        !nameError &&
+        !durationError
+      )
+    );
+  }, [
+    name,
+    description,
+    date,
+    startTime,
+    endTime,
+    duration,
+    activity,
+    nameError,
+    durationError,
+  ]);
 
   const obj = {
     name: String(name),
@@ -86,6 +114,10 @@ const EditCustomModal = ({
     duration: String(duration),
     activityType: activity,
   };
+
+  // Check if all fields are filled in
+  const isAllFieldsFilled =
+    name && description && date && startTime && endTime && duration && activity;
 
   const onClickEditHandler = async () => {
     // Validate all fields
@@ -196,6 +228,9 @@ const EditCustomModal = ({
                 }}
                 error={!!nameError}
                 helperText={nameError || ""}
+                inputProps={{
+                  maxLength: 15, // Set the maximum length to 50 characters
+                }}
               />
 
               <TextField
@@ -203,6 +238,9 @@ const EditCustomModal = ({
                 id="outlined-size-normal"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                inputProps={{
+                  maxLength: 15, // Set the maximum length to 50 characters
+                }}
               />
             </div>
             <div style={{ marginTop: "10px" }}>
@@ -291,6 +329,23 @@ const EditCustomModal = ({
             variant="h6"
             component="button"
             onClick={onClickEditHandler}
+            disabled={isLoading || isButtonDisabled}
+            sx={{
+              backgroundColor: isButtonDisabled ? "gray" : "#0DC58A",
+              width: "180px",
+              color: "white",
+              marginTop: "20px",
+              padding: "10px",
+              margin: "5px",
+            }}
+          >
+            {isLoading ? <CircularProgress size={24} /> : "Edit Activity"}
+          </Typography>
+          {/* <Typography
+            gutterBottom
+            variant="h6"
+            component="button"
+            onClick={onClickEditHandler}
             disabled={isLoading}
             sx={{
               backgroundColor: "#0DC58A",
@@ -302,7 +357,8 @@ const EditCustomModal = ({
             }}
           >
             {isLoading ? <CircularProgress size={24} /> : "Edit Activity"}
-          </Typography>
+          </Typography> */}
+
           <Typography
             gutterBottom
             variant="h6"

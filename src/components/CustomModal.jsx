@@ -73,7 +73,33 @@ const CustomModal = ({
   };
   const [nameError, setNameError] = useState("");
   const [durationError, setDurationError] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
+  useEffect(() => {
+    setIsButtonDisabled(
+      !(
+        name.trim() &&
+        description.trim() &&
+        date &&
+        startTime &&
+        endTime &&
+        duration.trim() &&
+        activity &&
+        !nameError &&
+        !durationError
+      )
+    );
+  }, [
+    name,
+    description,
+    date,
+    startTime,
+    endTime,
+    duration,
+    activity,
+    nameError,
+    durationError,
+  ]);
   // Add responsive styles based on `isSmallScreen` value
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -147,6 +173,9 @@ const CustomModal = ({
                 }}
                 error={!!nameError}
                 helperText={nameError || ""}
+                inputProps={{
+                  maxLength: 15, // Set the maximum length to 50 characters
+                }}
               />
 
               <TextField
@@ -155,6 +184,9 @@ const CustomModal = ({
                 // defaultValue="Normal"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                inputProps={{
+                  maxLength: 15, // Set the maximum length to 50 characters
+                }}
               />
             </div>
             <div
@@ -305,7 +337,7 @@ const CustomModal = ({
             marginTop: "10px",
           }}
         >
-          <Typography
+          {/* <Typography
             gutterBottom
             variant="h6"
             component="button"
@@ -325,6 +357,23 @@ const CustomModal = ({
             disabled={loading === true ? true : false}
           >
             {loading ? <CircularProgress /> : <span> Create Activity</span>}
+          </Typography> */}
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="button"
+            onClick={onClickHandler}
+            disabled={loading || isButtonDisabled}
+            sx={{
+              backgroundColor: isButtonDisabled ? "gray" : "#0DC58A",
+              width: "180px",
+              color: "white",
+              marginTop: "20px",
+              padding: "10px",
+              margin: "5px",
+            }}
+          >
+            {loading ? <CircularProgress size={24} /> : "Create Activity"}
           </Typography>
           <Typography
             gutterBottom
