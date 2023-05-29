@@ -57,14 +57,27 @@ export const {
   logout,
 } = authSlice.actions;
 
-
 export const signup = (userData) => async (dispatch) => {
   try {
     dispatch(signupStart());
     const response = await signupApi(userData);
-    dispatch(signupSuccess(response));
+    console.log("SignUp API Response", response);
+    if (response.status === 200 && response.data?.success === true) {
+      dispatch(signupSuccess(response.data));
+      return response; // Return the server response
+    } else {
+      const errorMessage =
+        response.data?.message || "Signup Failed. Please try again.";
+      console.log(errorMessage);
+      dispatch(signupFailure(errorMessage));
+      return response; // Return the server response with error status
+    }
   } catch (error) {
-    dispatch(signupFailure(error.message));
+    console.log(error);
+    const errorMessage =
+      error.response?.data?.message || "Signup Failed. Please try again.";
+    dispatch(signupFailure(errorMessage));
+    throw new Error(errorMessage); // Throw an error to be caught in the catch block
   }
 };
 

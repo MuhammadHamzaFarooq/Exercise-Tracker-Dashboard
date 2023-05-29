@@ -22,61 +22,118 @@ const SignUp = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const [isButtonDisabled, setButtonDisabled] = useState(true);
 
   const dispatch = useDispatch();
 
-  const validateName = () => {
-    if (name.trim() === "") {
+  const validateName = (value) => {
+    if (value.trim() === "") {
       setNameError("Name is required");
+    } else if (/\d/.test(value)) {
+      setNameError("Numbers are not allowed in the name");
     } else {
       setNameError("");
     }
+    validateForm();
   };
 
-  const validateEmail = () => {
+  const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(value)) {
       setEmailError("Invalid email address");
     } else {
       setEmailError("");
     }
+    validateForm();
   };
 
-  const validatePassword = () => {
-    if (password.length < 8) {
+  const validatePassword = (value) => {
+    if (value.length < 8) {
       setPasswordError("Password must be at least 8 characters long");
     } else {
       setPasswordError("");
     }
+    validateForm();
   };
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
+  const handleNameChange = (event) => {
+    const newName = event.target.value;
+    setName(newName);
+    validateName(newName);
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const handlePasswordChange = (event) => {
+    const newPassword = event.target.value;
+    setPassword(newPassword);
+    validatePassword(newPassword);
   };
 
-  const handleEmailChange = (e) => {
-    const inputEmail = e.target.value;
-    setEmail(inputEmail);
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(inputEmail)) {
-      setEmailError("Invalid email address");
-    } else if (inputEmail.includes(" ")) {
-      setEmailError("Email cannot contain spaces");
-    } else {
-      setEmailError("");
-    }
+  const handleEmailChange = (event) => {
+    const newEmail = event.target.value;
+    setEmail(newEmail);
+    validateEmail(newEmail);
   };
 
-  const handleSubmit = () => {
-    console.log("handleSubmit Click");
+  const validateForm = () => {
+    setButtonDisabled(
+      !name || !email || !password || nameError || emailError || passwordError
+    );
+  };
+
+  // const handleSubmit = () => {
+  //   // Validate name, email, and password before submitting
+  //   validateName(name);
+  //   validateEmail(email);
+  //   validatePassword(password);
+
+  //   // If there are no errors, proceed with form submission
+  //   if (
+  //     !nameError &&
+  //     !emailError &&
+  //     !passwordError &&
+  //     email &&
+  //     password &&
+  //     name
+  //   ) {
+  //     setLoading(true);
+
+  //     // Perform your form submission logic here
+  //     const payload = {
+  //       name: name,
+  //       email: email,
+  //       password: password,
+  //     };
+  //     dispatch(signup(payload))
+  //       .then((res) => {
+  //         console.log("Sign up successful", res);
+  //         Swal.fire("Good job!", "SignUp Successfully", "success");
+  //         // location.replace("/login");
+  //         setLoading(false);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Sign up error:", error);
+  //         if (
+  //           error.response &&
+  //           error.response.data &&
+  //           error.response.data.message
+  //         ) {
+  //           Swal.fire("Oops!", error.response.data.message, "error");
+  //         } else {
+  //           Swal.fire("Oops!", "Sign up failed", "error");
+  //         }
+  //       });
+  //     console.log("Form submitted successfully");
+  //   } else {
+  //     Swal.fire("Oops!", "SignUp Failed", "error");
+  //   }
+  // };
+
+  const handleSubmit = async () => {
     // Validate name, email, and password before submitting
-    validateName();
-    validateEmail();
-    validatePassword();
+    validateName(name);
+    validateEmail(email);
+    validatePassword(password);
+
     // If there are no errors, proceed with form submission
     if (
       !nameError &&
@@ -94,36 +151,80 @@ const SignUp = () => {
         email: email,
         password: password,
       };
-      console.log();
-      dispatch(signup(payload))
-        .then((res) => {
-          console.log("Sign up successful", res);
-          delay(2000);
-          Swal.fire("Good job!", "SignUp  Successfully", "success");
-          location.replace("/login");
-        })
-        .catch((error) => {
-          console.error("Sign up error:", error);
-          // Handle error here
-        });
-      console.log("Form submitted successfully");
+
+      try {
+        const response = await dispatch(signup(payload));
+        console.log("Sign up successful", response);
+        if (response?.success === true) {
+          Swal.fire("Good job!", "SignUp Successfully", "success");
+          // Redirect to the login page after successful signup
+          navigate("/login");
+          setLoading(false);
+        } else {
+          let str = response?.message;
+          if (str) {
+            str = str.toLowerCase().replace(/_/g, " ");
+          }
+
+          Swal.fire("Oops", str, "error");
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Sign up error:", error);
+        Swal.fire("Oops!", error.message || "Signup Failed", "error");
+        setLoading(false);
+      }
     } else {
       Swal.fire("Oops!", "SignUp Failed", "error");
     }
-
-    // If there are no errors, proceed with form submission
-    if (!nameError && !emailError && !passwordError) {
-    }
   };
 
+  // const handleSubmit = () => {
+  //   // Validate name, email, and password before submitting
+  //   validateName(name);
+  //   validateEmail(email);
+  //   validatePassword(password);
+
+  //   // If there are no errors, proceed with form submission
+  //   if (
+  //     !nameError &&
+  //     !emailError &&
+  //     !passwordError &&
+  //     email &&
+  //     password &&
+  //     name
+  //   ) {
+  //     setLoading(true);
+
+  //     // Perform your form submission logic here
+  //     const payload = {
+  //       name: name,
+  //       email: email,
+  //       password: password,
+  //     };
+
+  //     dispatch(signup(payload))
+  //       .then((res) => {
+  //         console.log("Sign up successful", res);
+  //         Swal.fire("Good job!", "SignUp Successfully", "success");
+  //         // Redirect to the login page after successful signup
+  //         navigate("/login");
+  //       })
+  //       .catch((error) => {
+  //         console.error("Sign up error:", error);
+  //         // Handle error here
+  //         Swal.fire("Oops!", error.message || "Signup Failed", "error");
+  //         setLoading(false);
+  //       });
+  //   } else {
+  //     Swal.fire("Oops!", "SignUp Failed", "error");
+  //   }
+  // };
+
   const navigate = useNavigate();
+
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-      }}
-    >
+    <div style={{ display: "flex", flexDirection: "row" }}>
       {/* Content Box */}
       <div
         id="content-container"
@@ -155,7 +256,7 @@ const SignUp = () => {
               marginBottom: "20px",
             }}
           >
-            Exercise Tracker{" "}
+            Exercise Tracker
           </Typography>
           <hr
             style={{
@@ -214,8 +315,8 @@ const SignUp = () => {
                 icon={<AiOutlineUser />}
                 type="text"
                 onChange={handleNameChange}
-                onBlur={validateName}
                 value={name}
+                onBlur={() => validateName(name)}
               />
               {nameError && <p className="error">{nameError}</p>}
             </div>
@@ -231,8 +332,8 @@ const SignUp = () => {
                 icon={<CiMail />}
                 type="email"
                 onChange={handleEmailChange}
-                onBlur={validateEmail}
                 value={email}
+                onBlur={validateEmail}
               />
               {emailError && <p className="error">{emailError}</p>}
             </div>
@@ -248,8 +349,8 @@ const SignUp = () => {
                 icon={<FaLock />}
                 type="password"
                 onChange={handlePasswordChange}
-                onBlur={validatePassword}
                 value={password}
+                onBlur={validatePassword}
               />
               {passwordError && <p className="error">{passwordError}</p>}
             </div>
@@ -259,32 +360,19 @@ const SignUp = () => {
                 marginTop: "30px",
               }}
             >
-              {/* <Button
-                onClick={handleSubmit}
-                title="Sign Up"
-                _style={{
-                  backgroundColor: "#0DC58A",
-                  border: "none",
-                  width: "100%",
-                  padding: "15px",
-                  textAlignCenter: "center",
-                  borderRadius: "50px",
-                  color: "white",
-                }}
-              /> */}
               <Button
-                title={isLoading ? <CircularProgress size={24} /> : "SignUp"}
+                title={isLoading ? <CircularProgress size={24} /> : "Sign Up"}
                 onClick={handleSubmit}
                 _style={{
-                  backgroundColor: "#0DC58A",
+                  backgroundColor: isButtonDisabled ? "#EBE8E8" : "#0DC58A",
                   border: "none",
                   width: "100%",
                   padding: "15px",
-                  textAlignCenter: "center",
+                  textAlign: "center",
                   borderRadius: "50px",
                   color: "white",
                 }}
-                disabled={isLoading}
+                disabled={isButtonDisabled}
               />
             </div>
             <div
