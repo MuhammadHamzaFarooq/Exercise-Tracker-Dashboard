@@ -23,38 +23,6 @@ const Goals = () => {
   const dispatch = useDispatch();
   const activity = useSelector((state) => state.activity);
 
-  const handleDeleteClick = async (item) => {
-    setSelectedItem(item);
-
-    // Show confirmation dialog to the user
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this item?"
-    );
-    if (!confirmed) {
-      return;
-    }
-
-    // Show loader while deleting the item
-    setLoading(true);
-
-    try {
-      // Call the handleDelete function with the item as an argument
-      await handleDelete(item);
-
-      // Show success alert after successful deletion
-      alert("Item deleted successfully");
-
-      // Close the modal and reset the selected item
-      setStatusModalOpen(false);
-      setSelectedItem(null);
-    } catch (error) {
-      // Handle error if deletion fails
-      alert("Failed to delete the item");
-    }
-
-    // Hide the loader
-    setLoading(false);
-  };
   useEffect(() => {
     dispatch(fetchActivities());
   }, []);

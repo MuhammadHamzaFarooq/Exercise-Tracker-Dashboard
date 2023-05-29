@@ -18,6 +18,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import dayjs from "dayjs";
 import EditCustomModal from "./EidtCustomModal";
+import Swal from "sweetalert2";
+import ConfirmationModal from "./ConfirmationModal";
+import { useDispatch } from "react-redux";
+import { fetchActivities } from "../features/activity/activitySlice";
+import { CircleNotifications } from "@mui/icons-material";
 const CustomTable = ({ data, handleDelete }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(6);
@@ -31,6 +36,8 @@ const CustomTable = ({ data, handleDelete }) => {
   const [duration, setDuration] = React.useState("");
   const [activity, setActivity] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const dispatch = useDispatch();
   const columns = [
     { id: "activityType", label: "Activity Type" },
     { id: "name", label: "Name" },
@@ -41,6 +48,37 @@ const CustomTable = ({ data, handleDelete }) => {
     { id: "endTime", label: "End Time" },
     { id: "action", label: "Action" },
   ];
+  // Function to handle confirmation modal open
+  const handleConfirmationModalOpen = () => {
+    setConfirmationModalOpen(true);
+  };
+
+  // Function to handle confirmation modal close
+  const handleConfirmationModalClose = () => {
+    setConfirmationModalOpen(false);
+  };
+
+  // Function to handle delete confirmation
+  const handleDeleteConfirmation = async () => {
+    setConfirmationModalOpen(false);
+    setLoading(true);
+
+    try {
+      await handleDelete(selectedItem);
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Simulating a delay for the server response
+      dispatch(fetchActivities());
+      Swal.fire("Good job!", "Item deleted successfully", "success");
+    } catch (error) {
+      console.log(error);
+      // Simulating a delay for the server response
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      Swal.fire("Oops!", "Failed to delete the item", "error");
+    }
+
+    setLoading(false);
+  };
 
   const handleEditClick = (item) => {
     setSelectedItem(item);
@@ -71,12 +109,6 @@ const CustomTable = ({ data, handleDelete }) => {
 
     setDuration(item?.duration);
     setStatusModalOpen(true);
-  };
-
-  const handleDeleteClick = (item) => {
-    setSelectedItem(item);
-    handleDelete(item); // Call the handleDelete function with the item as an argument
-    // setStatusModalOpen(true);
   };
 
   const handlePageChange = (newPage) => {
@@ -180,13 +212,23 @@ const CustomTable = ({ data, handleDelete }) => {
                   <IconButton onClick={() => handleEditClick(item)}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton onClick={() => handleDeleteClick(item)}>
-                    <DeleteIcon />
+                  <IconButton
+                    onClick={() => {
+                      setSelectedItem(item);
+                      handleConfirmationModalOpen();
+                    }}
+                  >
+                    {loading ? <CircleNotifications /> : <DeleteIcon />}
                   </IconButton>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
+          <ConfirmationModal
+            open={confirmationModalOpen}
+            onClose={handleConfirmationModalClose}
+            onConfirm={handleDeleteConfirmation}
+          />
         </Table>
         {data.length === 0 && (
           <Grid container justifyContent="center" alignItems="center">

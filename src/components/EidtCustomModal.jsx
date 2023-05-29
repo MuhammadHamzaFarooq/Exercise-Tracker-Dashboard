@@ -24,6 +24,7 @@ import {
   fetchActivities,
   updateActivity,
 } from "../features/activity/activitySlice";
+import Swal from "sweetalert2";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -111,9 +112,10 @@ const EditCustomModal = ({
     // Simulating a delay for the server response
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    dispatch(fetchActivities());
     setStatusModalOpen(!statusModalOpen);
     setIsLoading(false);
+    Swal.fire("Good job!", "Item Updated successfully", "success");
+    dispatch(fetchActivities());
   };
 
   const onClickCancelHandler = () => {
