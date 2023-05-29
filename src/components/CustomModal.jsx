@@ -71,6 +71,8 @@ const CustomModal = ({
   const handleChange = (event) => {
     setActivity(event.target.value);
   };
+  const [nameError, setNameError] = useState("");
+  const [durationError, setDurationError] = useState("");
 
   // Add responsive styles based on `isSmallScreen` value
 
@@ -117,12 +119,34 @@ const CustomModal = ({
             autoComplete="off"
           >
             <div>
-              <TextField
+              {/* <TextField
                 label="Name"
                 id="outlined-size-normal"
                 // defaultValue=""
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+              /> */}
+
+              <TextField
+                label="Name"
+                id="outlined-size-normal"
+                value={name}
+                onChange={(e) => {
+                  const enteredName = e.target.value;
+                  // Define a regular expression to validate the name (allowing only letters)
+                  const nameRegex = /^[a-zA-Z\s]+$/;
+
+                  if (nameRegex.test(enteredName) || enteredName === "") {
+                    setName(enteredName);
+                    setNameError(""); // Clear the error message when the input is valid
+                  } else {
+                    setNameError(
+                      "Invalid name. Only letters and spaces are allowed."
+                    );
+                  }
+                }}
+                error={!!nameError}
+                helperText={nameError || ""}
               />
 
               <TextField
@@ -138,17 +162,47 @@ const CustomModal = ({
                 marginTop: "10px",
               }}
             >
-              <TextField
+              {/* <TextField
                 label="Duration"
                 id="outlined-size-normal"
                 // defaultValue="Normal"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
+              /> */}
+              <TextField
+                label="Duration"
+                id="outlined-size-normal"
+                value={duration}
+                onChange={(e) => {
+                  const enteredDuration = e.target.value;
+                  // Define a regular expression to validate the duration (allowing only numbers)
+                  const durationRegex = /^\d*$/;
+
+                  if (durationRegex.test(enteredDuration)) {
+                    setDuration(enteredDuration);
+                    setDurationError(""); // Clear the error message when the input is valid
+                  } else {
+                    setDurationError(
+                      "Invalid duration. Only numbers are allowed."
+                    );
+                  }
+                }}
+                error={!!durationError}
+                helperText={durationError || ""}
               />
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+
+              {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="Date"
                   value={date}
+                  onChange={(newValue) => setDate(dateFormatter(newValue))}
+                  disablePast
+                />
+              </LocalizationProvider> */}
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Date"
+                  value={date == "" ? null : date}
                   onChange={(newValue) => setDate(dateFormatter(newValue))}
                   disablePast
                 />

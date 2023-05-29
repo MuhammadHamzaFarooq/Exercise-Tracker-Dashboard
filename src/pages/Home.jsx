@@ -32,7 +32,6 @@ export default function Home() {
   const [activity, setActivity] = React.useState([]);
   const [timeValidationError, setTimeValidationError] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  
 
   const handleStartTimeChange = (newValue) => {
     setStartTime(timeFormatter(newValue));
@@ -53,6 +52,7 @@ export default function Home() {
       setTimeValidationError(false);
     }
   };
+
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -97,12 +97,12 @@ export default function Home() {
 
     // Prepare the payload
     const payload = {
-      name,
+      name: String(name),
       description,
       date,
       startTime,
       endTime,
-      duration,
+      duration: String(duration),
       activityType: activity,
     };
 
