@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Modal, Typography, TextField } from "@mui/material";
+import {
+  Grid,
+  Modal,
+  Typography,
+  TextField,
+  CircularProgress,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,12 +19,12 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { dateFormatter, timeFormatter } from "../utils/helper";
 import dayjs from "dayjs";
 import { updateActivityApi } from "../features/activity/activityApi";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useDispatch } from "react-redux";
 import {
   fetchActivities,
   updateActivity,
 } from "../features/activity/activitySlice";
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -59,10 +65,11 @@ const EditCustomModal = ({
   activity,
   setActivity,
   selectedItem,
-  setSelectedItem,
 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleChange = (event) => {
     setActivity(event.target.value);
   };
@@ -76,30 +83,43 @@ const EditCustomModal = ({
     duration,
     activityType: activity,
   };
+
   const onClickEditHandler = async () => {
+    // Validate all fields
+    if (
+      !name ||
+      !description ||
+      !date ||
+      !startTime ||
+      !endTime ||
+      !duration ||
+      !activity
+    ) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    setIsLoading(true);
+
     const updateObj = {
       ...selectedItem,
       ...obj,
     };
-    dispatch(updateActivity(selectedItem?._id, updateObj));
-    setName("");
-    setActivity([]);
-    setDate("");
-    setStartTime(null);
-    setEndTime(null);
-    setDuration("");
-    setDescription("");
-    await setTimeout(() => {}, 5000);
+
+    await dispatch(updateActivity(selectedItem?._id, updateObj));
+
+    // Simulating a delay for the server response
+    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     dispatch(fetchActivities());
+    setStatusModalOpen(!statusModalOpen);
+    setIsLoading(false);
+  };
 
-    setStatusModalOpen(!statusModalOpen);
-  };
   const onClickCancelHandler = () => {
-    console.log("Cancel OnClick Handler");
     setStatusModalOpen(!statusModalOpen);
   };
-  console.log(activity);
+
   return (
     <Modal open={statusModalOpen} onClose={() => setStatusModalOpen(false)}>
       <Grid
@@ -146,7 +166,6 @@ const EditCustomModal = ({
               <TextField
                 label="Name"
                 id="outlined-size-normal"
-                // defaultValue=""
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -154,20 +173,14 @@ const EditCustomModal = ({
               <TextField
                 label="Description"
                 id="outlined-size-normal"
-                // defaultValue="Normal"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
-            <div
-              style={{
-                marginTop: "10px",
-              }}
-            >
+            <div style={{ marginTop: "10px" }}>
               <TextField
                 label="Duration"
                 id="outlined-size-normal"
-                // defaultValue="Normal"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
               />
@@ -180,57 +193,20 @@ const EditCustomModal = ({
                 />
               </LocalizationProvider>
             </div>
-            <div
-              style={{
-                marginTop: "10px",
-              }}
-            >
+            <div style={{ marginTop: "10px" }}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <TimePicker
                   label="Start Time"
                   value={startTime}
-                  // onChange={(newValue) => setStartTime(timeFormatter(newValue))}
                   onChange={(newValue) => setStartTime(newValue)}
                 />
                 <TimePicker
                   label="End Time"
                   value={endTime}
-                  //   onChange={(newValue) => setEndTime(timeFormatter(newValue))}
                   onChange={(newValue) => setEndTime(newValue)}
                 />
               </LocalizationProvider>
             </div>
-            {/* <div>
-              <FormControl sx={{ m: 1, width: 460, mt: 3 }}>
-                <Select
-                  value={activity}
-                  onChange={handleChange}
-                  input={<OutlinedInput />}
-                  renderValue={(selected) => {
-                    if (!selected) {
-                      return <em>Select Activity Type</em>;
-                    }
-                    return selected;
-                  }}
-                  MenuProps={MenuProps}
-                  inputProps={{ "aria-label": "Without label" }}
-                  label="Activity Type"
-                >
-                  <MenuItem disabled value="Select Activity Type">
-                    <em>Select Activity Type </em>
-                  </MenuItem>
-                  {multipleChoices.map((name) => (
-                    <MenuItem
-                      key={name}
-                      value={name}
-                      style={getStyles(name, activity, theme)}
-                    >
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div> */}
             <div>
               <FormControl sx={{ m: 1, width: 460, mt: 3 }}>
                 <Select
@@ -263,7 +239,6 @@ const EditCustomModal = ({
           style={{
             display: "flex",
             justifyContent: "space-between",
-            // backgroundColor: "gray",
             width: "76%",
             marginTop: "10px",
           }}
@@ -272,11 +247,8 @@ const EditCustomModal = ({
             gutterBottom
             variant="h6"
             component="button"
-            // onClick={() => {
-            //   console.log("btn click");
-            //   setStatusModalOpen(!statusModalOpen);
-            // }}
             onClick={onClickEditHandler}
+            disabled={isLoading}
             sx={{
               backgroundColor: "#0DC58A",
               width: "180px",
@@ -286,13 +258,14 @@ const EditCustomModal = ({
               margin: "5px",
             }}
           >
-            Edit Activity
+            {isLoading ? <CircularProgress size={24} /> : "Edit Activity"}
           </Typography>
           <Typography
             gutterBottom
             variant="h6"
             component="button"
             onClick={onClickCancelHandler}
+            disabled={isLoading}
             sx={{
               backgroundColor: "#778CA2",
               width: "180px",

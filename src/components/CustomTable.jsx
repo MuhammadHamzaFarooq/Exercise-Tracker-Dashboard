@@ -16,44 +16,9 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import PendingIcon from "@mui/icons-material/Pending";
-import Box from "@mui/material/Box";
-import { useTheme } from "@mui/material/styles";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { dateFormatter, timeFormatter } from "../utils/helper";
 import EditCustomModal from "./EidtCustomModal";
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const names = ["Run", "Swim", "Hike", "Bicycle Ride", "Walk"];
-
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
-const CustomTable = ({ data, handleEdit, handleDelete, handleStatus }) => {
+const CustomTable = ({ data, handleDelete }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(6);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -77,73 +42,46 @@ const CustomTable = ({ data, handleEdit, handleDelete, handleStatus }) => {
     { id: "action", label: "Action" },
   ];
 
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
-
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
-
-  // const handleEditClick = (item) => {
-  //   console.log("Edit Click Items ", item?.activity);
-  //   setSelectedItem(item);
-  //   setName(item?.name);
-  //   setDate(item?.date ? dayjs(item.date) : dayjs());
-  //   setDescription(item?.description);
-  //   setEndTime(item?.endTime);
-  //   setStartTime(item?.startTime);
-  //   setActivity(item?.activityType);
-  //   setDuration(item?.duration);
-  //   setStatusModalOpen(true);
-  //   handleEdit(item);
-  // };
   const handleEditClick = (item) => {
-    console.log("Edit Click Items ", item?.activity);
     setSelectedItem(item);
     setName(item?.name);
-    setDate(item?.date ? dayjs(item.date) : dayjs());
     setDescription(item?.description);
-    setEndTime(item?.endTime ? dayjs(item.endTime) : null);
-    setStartTime(item?.startTime ? dayjs(item.startTime) : null);
     setActivity(item?.activityType);
+
+    // Validate and set date
+    if (item?.date && dayjs(item.date).isValid()) {
+      setDate(dayjs(item.date));
+    } else {
+      setDate(null); // Set to null when date is invalid or missing
+    }
+
+    // Validate and set start time
+    if (item?.startTime && dayjs(item.startTime, "HH:mm").isValid()) {
+      setStartTime(dayjs(item.startTime, "HH:mm"));
+    } else {
+      setStartTime(null); // Set to null when start time is invalid or missing
+    }
+
+    // Validate and set end time
+    if (item?.endTime && dayjs(item.endTime, "HH:mm").isValid()) {
+      setEndTime(dayjs(item.endTime, "HH:mm"));
+    } else {
+      setEndTime(null); // Set to null when end time is invalid or missing
+    }
+
     setDuration(item?.duration);
     setStatusModalOpen(true);
-    handleEdit(item);
   };
 
   const handleDeleteClick = (item) => {
-    console.log("Handle Delete Item => ", item);
     setSelectedItem(item);
     handleDelete(item); // Call the handleDelete function with the item as an argument
     // setStatusModalOpen(true);
   };
 
-  const handleStatusClick = (item) => {
-    setSelectedItem(item);
-    setStatusModalOpen(true);
-  };
-
-  const handleStatusChange = (newStatus) => {
-    handleStatus(selectedItem, newStatus);
-    setStatusModalOpen(false);
-    setSelectedItem(null);
-  };
-
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
-
-  // const getPaginatedData = () => {
-  //   const startIndex = (currentPage - 1) * rowsPerPage;
-  //   const endIndex = startIndex + rowsPerPage;
-  //   return data?.slice(startIndex, endIndex);
-  // };
 
   const getPaginatedData = () => {
     const startIndex = (currentPage - 1) * rowsPerPage;
@@ -185,13 +123,6 @@ const CustomTable = ({ data, handleEdit, handleDelete, handleStatus }) => {
       );
     }
     return paginationButtons;
-  };
-
-  const onClickHandler = () => {
-    console.log("OnlClick Handler Click Edit");
-  };
-  const onClickCancelHandler = () => {
-    console.log("OnlClick Handler Click Cancel");
   };
 
   return (
@@ -252,9 +183,6 @@ const CustomTable = ({ data, handleEdit, handleDelete, handleStatus }) => {
                   <IconButton onClick={() => handleDeleteClick(item)}>
                     <DeleteIcon />
                   </IconButton>
-                  {/* <IconButton onClick={() => handleStatusClick(item)}>
-                  <PendingIcon />
-                </IconButton> */}
                 </TableCell>
               </TableRow>
             ))}

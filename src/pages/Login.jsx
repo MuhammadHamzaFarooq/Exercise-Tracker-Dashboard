@@ -39,7 +39,16 @@ const Login = () => {
   };
 
   const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+    const inputEmail = e.target.value;
+    setEmail(inputEmail);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(inputEmail)) {
+      setEmailError("Invalid email address");
+    } else if (inputEmail.includes(" ")) {
+      setEmailError("Email cannot contain spaces");
+    } else {
+      setEmailError("");
+    }
   };
 
   const handlePasswordChange = (e) => {
@@ -256,7 +265,13 @@ const Login = () => {
                   borderRadius: "50px",
                   color: "white",
                 }}
-                disabled={isLoading}
+                disabled={
+                  isLoading ||
+                  emailError ||
+                  passwordError ||
+                  !email ||
+                  !password
+                }
               />
             </div>
             <div

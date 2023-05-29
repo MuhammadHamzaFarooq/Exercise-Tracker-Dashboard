@@ -15,203 +15,6 @@ const formatTime = (timeString) => {
   const time = new Date(timeString);
   return time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 };
-const data = [
-  {
-    id: "6469fecfb4044b9635d124ce",
-    name: "sunday walk",
-    description: "something ....",
-    date: formatDate("2023-05-21T00:00:00.000+00:00"),
-    duration: "3 hours",
-    startTime: formatTime("2023-05-21T14:13:19.000+00:00"),
-    endTime: formatTime("2023-05-21T14:13:19.003+00:00"),
-    status: "In Progress",
-    activityType: "Walk",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684683179/Exercise%20Tracker%20Dashboard/walk_and_palying_phone_flat_vector_illustration1_generated_pp1jp2.jpg",
-  },
-  {
-    id: "6469fef9b4044b9635d124d4",
-    name: "sunday Swim",
-    description: "something ....",
-    date: formatDate("2023-05-21T00:00:00.000+00:00"),
-    duration: "4 hours",
-    startTime: formatTime("2023-05-23T14:13:19.000+00:00"),
-    endTime: formatTime("2023-05-23T14:13:19.004+00:00"),
-    status: "Pending",
-    activityType: "Swim",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684683107/Exercise%20Tracker%20Dashboard/8si7_juh6_130430_fwsd9c.jpg",
-  },
-  {
-    id: "646a37a87e920bff8fb4521c",
-    name: "Wednesday Running",
-    description: "something ....",
-    date: formatDate("2023-05-21T00:00:00.000+00:00"),
-    duration: "4 hours",
-    startTime: formatTime("2023-05-07T14:13:19.000Z"),
-    endTime: formatTime("2023-05-07T14:13:19.004Z"),
-    status: "Pending",
-    activityType: "Run",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684683136/Exercise%20Tracker%20Dashboard/runing_man_generated_dfog6w.jpg",
-  },
-  {
-    id: "646a3b5856b97acaaecc4c69",
-    name: "Thursday Hiking ",
-    description: "something ....",
-    date: formatDate("2023-05-25T00:00:00.000+00:00"),
-    duration: "4 hours",
-    startTime: formatTime("2023-05-07T14:13:19.000Z"),
-    endTime: formatTime("2023-05-07T14:13:19.004+00:00"),
-    status: "Pending",
-    activityType: "Hike",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684683190/Exercise%20Tracker%20Dashboard/hiking-illustration-vector_bigs43.jpg",
-  },
-  {
-    id: "646a3b5856b97acaaecc4c69",
-    name: "Friday Bicycle Riding ",
-    description: "something ....",
-    date: formatDate("2023-05-26T00:00:00.000Z"),
-    duration: "4 hours",
-    startTime: formatTime("2023-05-07T14:13:19.000Z"),
-    endTime: formatTime("2023-05-07T14:13:19.004Z"),
-    status: "Pending",
-    activityType: "Bicycle Ride",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684684638/Exercise%20Tracker%20Dashboard/1892_R0lVIERBTiA0NDItMDc_cosxob.jpg",
-  },
-  {
-    id: "6469fecfb4044b9635d124ce",
-    name: "sunday walk",
-    description: "something ....",
-    date: formatDate("2023-05-21T00:00:00.000+00:00"),
-    duration: "3 hours",
-    startTime: formatTime("2023-05-21T14:13:19.000+00:00"),
-    endTime: formatTime("2023-05-21T14:13:19.003+00:00"),
-    status: "In Progress",
-    activityType: "Walk",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684683179/Exercise%20Tracker%20Dashboard/walk_and_palying_phone_flat_vector_illustration1_generated_pp1jp2.jpg",
-  },
-  {
-    id: "6469fef9b4044b9635d124d4",
-    name: "sunday Swim",
-    description: "something ....",
-    date: formatDate("2023-05-21T00:00:00.000+00:00"),
-    duration: "4 hours",
-    startTime: formatTime("2023-05-23T14:13:19.000+00:00"),
-    endTime: formatTime("2023-05-23T14:13:19.004+00:00"),
-    status: "Pending",
-    activityType: "Swim",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684683107/Exercise%20Tracker%20Dashboard/8si7_juh6_130430_fwsd9c.jpg",
-  },
-  {
-    id: "646a37a87e920bff8fb4521c",
-    name: "Wednesday Running",
-    description: "something ....",
-    date: formatDate("2023-05-21T00:00:00.000+00:00"),
-    duration: "4 hours",
-    startTime: formatTime("2023-05-07T14:13:19.000Z"),
-    endTime: formatTime("2023-05-07T14:13:19.004Z"),
-    status: "Pending",
-    activityType: "Run",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684683136/Exercise%20Tracker%20Dashboard/runing_man_generated_dfog6w.jpg",
-  },
-  {
-    id: "646a3b5856b97acaaecc4c69",
-    name: "Thursday Hiking ",
-    description: "something ....",
-    date: formatDate("2023-05-25T00:00:00.000+00:00"),
-    duration: "4 hours",
-    startTime: formatTime("2023-05-07T14:13:19.000Z"),
-    endTime: formatTime("2023-05-07T14:13:19.004+00:00"),
-    status: "Pending",
-    activityType: "Hike",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684683190/Exercise%20Tracker%20Dashboard/hiking-illustration-vector_bigs43.jpg",
-  },
-  {
-    id: "646a3b5856b97acaaecc4c69",
-    name: "Friday Bicycle Riding ",
-    description: "something ....",
-    date: formatDate("2023-05-26T00:00:00.000Z"),
-    duration: "4 hours",
-    startTime: formatTime("2023-05-07T14:13:19.000Z"),
-    endTime: formatTime("2023-05-07T14:13:19.004Z"),
-    status: "Pending",
-    activityType: "Bicycle Ride",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684684638/Exercise%20Tracker%20Dashboard/1892_R0lVIERBTiA0NDItMDc_cosxob.jpg",
-  },
-  {
-    id: "6469fecfb4044b9635d124ce",
-    name: "sunday walk",
-    description: "something ....",
-    date: formatDate("2023-05-21T00:00:00.000+00:00"),
-    duration: "3 hours",
-    startTime: formatTime("2023-05-21T14:13:19.000+00:00"),
-    endTime: formatTime("2023-05-21T14:13:19.003+00:00"),
-    status: "In Progress",
-    activityType: "Walk",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684683179/Exercise%20Tracker%20Dashboard/walk_and_palying_phone_flat_vector_illustration1_generated_pp1jp2.jpg",
-  },
-  {
-    id: "6469fef9b4044b9635d124d4",
-    name: "sunday Swim",
-    description: "something ....",
-    date: formatDate("2023-05-21T00:00:00.000+00:00"),
-    duration: "4 hours",
-    startTime: formatTime("2023-05-23T14:13:19.000+00:00"),
-    endTime: formatTime("2023-05-23T14:13:19.004+00:00"),
-    status: "Pending",
-    activityType: "Swim",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684683107/Exercise%20Tracker%20Dashboard/8si7_juh6_130430_fwsd9c.jpg",
-  },
-  {
-    id: "646a37a87e920bff8fb4521c",
-    name: "Wednesday Running",
-    description: "something ....",
-    date: formatDate("2023-05-21T00:00:00.000+00:00"),
-    duration: "4 hours",
-    startTime: formatTime("2023-05-07T14:13:19.000Z"),
-    endTime: formatTime("2023-05-07T14:13:19.004Z"),
-    status: "Pending",
-    activityType: "Run",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684683136/Exercise%20Tracker%20Dashboard/runing_man_generated_dfog6w.jpg",
-  },
-  {
-    id: "646a3b5856b97acaaecc4c69",
-    name: "Thursday Hiking ",
-    description: "something ....",
-    date: formatDate("2023-05-25T00:00:00.000+00:00"),
-    duration: "4 hours",
-    startTime: formatTime("2023-05-07T14:13:19.000Z"),
-    endTime: formatTime("2023-05-07T14:13:19.004+00:00"),
-    status: "Pending",
-    activityType: "Hike",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684683190/Exercise%20Tracker%20Dashboard/hiking-illustration-vector_bigs43.jpg",
-  },
-  {
-    id: "646a3b5856b97acaaecc4c69",
-    name: "Friday Bicycle Riding ",
-    description: "something ....",
-    date: formatDate("2023-05-26T00:00:00.000Z"),
-    duration: "4 hours",
-    startTime: formatTime("2023-05-07T14:13:19.000Z"),
-    endTime: formatTime("2023-05-07T14:13:19.004Z"),
-    status: "Pending",
-    activityType: "Bicycle Ride",
-    avatar:
-      "https://res.cloudinary.com/ddpxcjmjn/image/upload/v1684684638/Exercise%20Tracker%20Dashboard/1892_R0lVIERBTiA0NDItMDc_cosxob.jpg",
-  },
-];
 
 const Goals = () => {
   // const [data, setData] = useState([]);
@@ -220,6 +23,38 @@ const Goals = () => {
   const dispatch = useDispatch();
   const activity = useSelector((state) => state.activity);
 
+  const handleDeleteClick = async (item) => {
+    setSelectedItem(item);
+
+    // Show confirmation dialog to the user
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    // Show loader while deleting the item
+    setLoading(true);
+
+    try {
+      // Call the handleDelete function with the item as an argument
+      await handleDelete(item);
+
+      // Show success alert after successful deletion
+      alert("Item deleted successfully");
+
+      // Close the modal and reset the selected item
+      setStatusModalOpen(false);
+      setSelectedItem(null);
+    } catch (error) {
+      // Handle error if deletion fails
+      alert("Failed to delete the item");
+    }
+
+    // Hide the loader
+    setLoading(false);
+  };
   useEffect(() => {
     dispatch(fetchActivities());
   }, []);
@@ -229,9 +64,7 @@ const Goals = () => {
     <>
       <CustomTable
         data={activity?.activities ? activity?.activities : []}
-        handleEdit={(item) => console.log("edit Handler Click", item)}
         handleDelete={(item) => dispatch(deleteActivity(item?._id))}
-        handleStatus={() => console.log("Status Handler Click")}
       />
     </>
   );

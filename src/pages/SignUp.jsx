@@ -54,12 +54,21 @@ const SignUp = () => {
     setName(e.target.value);
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    const inputEmail = e.target.value;
+    setEmail(inputEmail);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(inputEmail)) {
+      setEmailError("Invalid email address");
+    } else if (inputEmail.includes(" ")) {
+      setEmailError("Email cannot contain spaces");
+    } else {
+      setEmailError("");
+    }
   };
 
   const handleSubmit = () => {

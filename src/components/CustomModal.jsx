@@ -73,17 +73,7 @@ const CustomModal = ({
   };
 
   // Add responsive styles based on `isSmallScreen` value
-  // const modalContainerStyle = isSmallScreen
-  //   ? {
-  //       width: "90%",
-  //       height: "80%",
-  //       display: "flex",
-  //       flexDirection: "column",
-  //     }
-  //   : {
-  //       width: "40%",
-  //       height: "70%",
-  //     };
+
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const modalContainerStyle = {
@@ -206,37 +196,7 @@ const CustomModal = ({
                 </Typography>
               )}
             </div>
-            {/* <div>
-              <FormControl sx={{ m: 1, width: 460, mt: 3 }}>
-                <Select
-                  value={activity}
-                  onChange={handleChange}
-                  input={<OutlinedInput />}
-                  renderValue={(selected) => {
-                    if (!selected) {
-                      return <em>Select Activity Type</em>;
-                    }
-                    return selected;
-                  }}
-                  MenuProps={MenuProps}
-                  inputProps={{ "aria-label": "Without label" }}
-                  label="Activity Type"
-                >
-                  <MenuItem disabled value="Select Activity Type">
-                    <em>Select Activity Type </em>
-                  </MenuItem>
-                  {multipleChoices.map((name) => (
-                    <MenuItem
-                      key={name}
-                      value={name}
-                      style={getStyles(name, activity, theme)}
-                    >
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div> */}
+
             <div>
               <FormControl sx={{ m: 1, width: 460, mt: 3 }}>
                 <Select
