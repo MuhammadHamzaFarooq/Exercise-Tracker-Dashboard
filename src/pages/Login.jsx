@@ -19,76 +19,86 @@ const Login = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const [isButtonDisabled, setButtonDisabled] = useState(true);
   const dispatch = useDispatch();
 
-  const validateEmail = () => {
+  const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(value.trim())) {
       setEmailError("Invalid email address");
     } else {
       setEmailError("");
     }
+    validateForm();
   };
 
-  const validatePassword = () => {
-    if (password.length < 8) {
+  const validatePassword = (value) => {
+    if (value.length < 8) {
       setPasswordError("Password must be at least 8 characters long");
     } else {
       setPasswordError("");
     }
+    validateForm();
   };
 
-  const handleEmailChange = (e) => {
-    const inputEmail = e.target.value;
-    setEmail(inputEmail);
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(inputEmail)) {
-      setEmailError("Invalid email address");
-    } else if (inputEmail.includes(" ")) {
-      setEmailError("Email cannot contain spaces");
-    } else {
-      setEmailError("");
-    }
+  const handlePasswordChange = (event) => {
+    const newPassword = event.target.value;
+    setPassword(newPassword);
+    validatePassword(newPassword);
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const handleEmailChange = (event) => {
+    const newEmail = event.target.value;
+    setEmail(newEmail);
+    validateEmail(newEmail);
   };
 
-  const handleSubmit = () => {
-    // Validate email and password before submitting
-    validateEmail();
-    validatePassword();
+  const validateForm = () => {
+    setButtonDisabled(!email || !password || emailError || passwordError);
+  };
 
-    // If there are no errors, proceed with form submission
+  const handleSubmit = async () => {
+    // Validate name, email, and password before submitting
+    validateEmail(email);
+    validatePassword(password);
+
     // If there are no errors, proceed with form submission
     if (!emailError && !passwordError && email && password) {
       setLoading(true);
 
       // Perform your form submission logic here
       const payload = {
-        email,
-        password,
+        email: email,
+        password: password,
       };
-      dispatch(login(payload))
-        .then((res) => {
-          console.log("Sign up successful", res);
+      try {
+        const response = await dispatch(login(payload));
+        console.log("Login up successful", response);
+        if (response?.success === true) {
+          await localStorage.setItem("token", response?.data?.token);
           Swal.fire("Good job!", "Login successfully", "success");
-          delay(2000);
+          // Redirect to the login page after successful signup
           location.replace("/dashboard");
-        })
-        .catch((error) => {
-          console.error("Sign up error:", error);
-          // Handle error here
-        })
-        .finally(() => {
           setLoading(false);
-        });
-      console.log("Form submitted successfully");
+        } else {
+          console.log(response?.message);
+          let str = response?.message;
+          if (str) {
+            str = str.toLowerCase().replace(/_/g, " ");
+          }
+          Swal.fire("Oops", str, "error");
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Login up error:", error);
+        Swal.fire("Oops!", error.message || "Login Failed", "error");
+        setLoading(false);
+      }
     } else {
       Swal.fire("Oops!", "Login Failed", "error");
     }
   };
+
   // const handleSubmit = () => {
   //   // Validate email and password before submitting
   //   validateEmail();
@@ -254,24 +264,18 @@ const Login = () => {
                 }}
               /> */}
               <Button
+                title={isLoading ? <CircularProgress size={24} /> : "login"}
                 onClick={handleSubmit}
-                title={isLoading ? <CircularProgress size={24} /> : "Login"}
                 _style={{
-                  backgroundColor: "#0DC58A",
+                  backgroundColor: isButtonDisabled ? "#EBE8E8" : "#0DC58A",
                   border: "none",
                   width: "100%",
                   padding: "15px",
-                  textAlignCenter: "center",
+                  textAlign: "center",
                   borderRadius: "50px",
                   color: "white",
                 }}
-                disabled={
-                  isLoading ||
-                  emailError ||
-                  passwordError ||
-                  !email ||
-                  !password
-                }
+                disabled={isButtonDisabled}
               />
             </div>
             <div

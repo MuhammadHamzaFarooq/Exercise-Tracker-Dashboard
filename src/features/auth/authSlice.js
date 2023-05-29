@@ -85,9 +85,22 @@ export const login = (userData) => async (dispatch) => {
   try {
     dispatch(loginStart());
     const response = await loginApi(userData);
-    dispatch(loginSuccess(response));
+    if (response.status === 200 && response.data?.success === true) {
+      dispatch(loginSuccess(response.data));
+      return response; // Return the server response
+    } else {
+      const errorMessage =
+        response.data?.message || "Signup Failed. Please try again.";
+      console.log(errorMessage);
+      dispatch(loginFailure(errorMessage));
+      return response; // Return the server response with error status
+    }
   } catch (error) {
-    dispatch(loginFailure(error.message));
+    console.log(error);
+    const errorMessage =
+      error.response?.data?.message || "Signup Failed. Please try again.";
+    dispatch(loginFailure(errorMessage));
+    throw new Error(errorMessage);
   }
 };
 

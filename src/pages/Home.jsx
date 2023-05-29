@@ -32,6 +32,7 @@ export default function Home() {
   const [activity, setActivity] = React.useState([]);
   const [timeValidationError, setTimeValidationError] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  
 
   const handleStartTimeChange = (newValue) => {
     setStartTime(timeFormatter(newValue));
@@ -88,6 +89,7 @@ export default function Home() {
       delay(2000);
       setStatusModalOpen(!statusModalOpen);
       Swal.fire("Oops !", "Please fill in all the required fields.", "error");
+      setLoading(false);
       return;
     }
 
@@ -119,11 +121,13 @@ export default function Home() {
         setLoading(false);
         Swal.fire("Good job!", "Activity Created  Successfully", "success");
         setStatusModalOpen(!statusModalOpen);
+        setLoading(false);
       })
       .catch((error) => {
         setLoading(false);
-        console.error("Sign up error:", error);
+        console.error(" error:", error);
         Swal.fire("Oops!", error.message, "error");
+
         // Handle error here
       });
   };

@@ -110,12 +110,13 @@ const EditCustomModal = ({
     await dispatch(updateActivity(selectedItem?._id, updateObj));
 
     // Simulating a delay for the server response
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    dispatch(fetchActivities());
     setStatusModalOpen(!statusModalOpen);
+
     setIsLoading(false);
     Swal.fire("Good job!", "Activity Updated successfully", "success");
-    dispatch(fetchActivities());
+    
   };
 
   const onClickCancelHandler = () => {

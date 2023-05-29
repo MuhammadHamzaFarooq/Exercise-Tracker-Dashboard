@@ -25,6 +25,10 @@ const Goals = () => {
 
   useEffect(() => {
     dispatch(fetchActivities());
+  }, [activity]);
+
+  useEffect(() => {
+    dispatch(fetchActivities());
   }, []);
 
   console.log(activity);

@@ -65,8 +65,6 @@ const CustomTable = ({ data, handleDelete }) => {
 
     try {
       await handleDelete(selectedItem);
-
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       // Simulating a delay for the server response
       dispatch(fetchActivities());
       Swal.fire("Good job!", "Item deleted successfully", "success");
@@ -200,14 +198,14 @@ const CustomTable = ({ data, handleDelete }) => {
                   >
                     <Avatar alt={item?._id} src={item?.url} />
                   </span>
-                  <span>{item.activityType}</span>
+                  <span>{item?.activityType}</span>
                 </TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.description}</TableCell>
-                <TableCell>{item.date}</TableCell>
-                <TableCell>{item.duration}</TableCell>
-                <TableCell>{item.startTime}</TableCell>
-                <TableCell>{item.endTime}</TableCell>
+                <TableCell>{item?.name}</TableCell>
+                <TableCell>{item?.description}</TableCell>
+                <TableCell>{item?.date}</TableCell>
+                <TableCell>{item?.duration}</TableCell>
+                <TableCell>{item?.startTime}</TableCell>
+                <TableCell>{item?.endTime}</TableCell>
                 <TableCell>
                   <IconButton onClick={() => handleEditClick(item)}>
                     <EditIcon />
