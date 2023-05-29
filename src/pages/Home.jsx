@@ -98,14 +98,13 @@ export default function Home() {
     // Prepare the payload
     const payload = {
       name: String(name),
-      description,
-      date,
-      startTime,
-      endTime,
+      description: String(description),
+      date: String(date),
+      startTime: String(startTime),
+      endTime: String(endTime),
       duration: String(duration),
-      activityType: activity,
+      activityType: String(activity),
     };
-
     // Dispatch the createActivity action
     dispatch(createActivity(payload))
       .then((res) => {
