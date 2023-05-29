@@ -20,6 +20,7 @@ import { dateFormatter, timeFormatter } from "../utils/helper";
 import dayjs from "dayjs";
 import { updateActivityApi } from "../features/activity/activityApi";
 import { useDispatch } from "react-redux";
+import moment from "moment";
 import {
   fetchActivities,
   updateActivity,
@@ -97,6 +98,9 @@ const EditCustomModal = ({
       !duration ||
       !activity
     ) {
+      setDate("");
+      startTime("");
+      endTime("");
       alert("Please fill in all fields.");
       return;
     }
@@ -175,10 +179,16 @@ const EditCustomModal = ({
                   // Define a regular expression to validate the name (allowing only letters)
                   const nameRegex = /^[a-zA-Z\s]+$/;
 
-                  if (nameRegex.test(enteredName) || enteredName === "") {
+                  if (enteredName.trim() === "") {
+                    // Empty value, display an error message
+                    setName("");
+                    setNameError("Name cannot be empty.");
+                  } else if (nameRegex.test(enteredName)) {
+                    // Valid name, clear error message and set the name state
                     setName(enteredName);
-                    setNameError(""); // Clear the error message when the input is valid
+                    setNameError("");
                   } else {
+                    // Invalid name, display an error message
                     setNameError(
                       "Invalid name. Only letters and spaces are allowed."
                     );

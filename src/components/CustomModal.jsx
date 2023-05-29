@@ -179,8 +179,25 @@ const CustomModal = ({
                   const durationRegex = /^\d*$/;
 
                   if (durationRegex.test(enteredDuration)) {
-                    setDuration(enteredDuration);
-                    setDurationError(""); // Clear the error message when the input is valid
+                    let hasSpaces = /^\d{0,3}$/.test(enteredDuration);
+                    if (hasSpaces) {
+                      if (hasSpaces && enteredDuration !== "0") {
+                        if (enteredDuration <= 24) {
+                          setDuration(enteredDuration);
+                          setDurationError("");
+                        } else {
+                          return;
+                        }
+
+                        // Clear the error message when the input is valid
+                      } else {
+                        setDurationError("Invalid duration. 0 not allowed.");
+                      }
+                    } else {
+                      setDurationError(
+                        "Invalid duration. Only 3 digits numbers are allowed."
+                      );
+                    }
                   } else {
                     setDurationError(
                       "Invalid duration. Only numbers are allowed."
