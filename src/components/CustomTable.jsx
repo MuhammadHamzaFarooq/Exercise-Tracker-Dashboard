@@ -218,7 +218,7 @@ const CustomTable = ({ data, handleDelete }) => {
                       handleConfirmationModalOpen();
                     }}
                   >
-                    {loading ? <CircleNotifications /> : <DeleteIcon />}
+                    <DeleteIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>

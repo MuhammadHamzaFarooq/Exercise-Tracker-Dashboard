@@ -114,7 +114,7 @@ const EditCustomModal = ({
 
     setStatusModalOpen(!statusModalOpen);
     setIsLoading(false);
-    Swal.fire("Good job!", "Item Updated successfully", "success");
+    Swal.fire("Good job!", "Activity Updated successfully", "success");
     dispatch(fetchActivities());
   };
 

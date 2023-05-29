@@ -18,7 +18,7 @@ const ConfirmationModal = ({ open, onClose, onConfirm }) => {
         }}
       >
         <Typography variant="h4" gutterBottom>
-          Are you sure you want to delete this item?
+          Are you sure you want to delete this Activity?
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "flex-end", marginTop: 2 }}>
           <Button onClick={onClose} sx={{ marginRight: 1 }}>
